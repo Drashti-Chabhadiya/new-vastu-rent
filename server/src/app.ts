@@ -12,6 +12,8 @@ import { statsRoutes } from "./routes/stats.routes";
 
 import multipart from "@fastify/multipart";
 import { uploadRoutes } from "./routes/upload.routes";
+import { likeRoutes } from "./routes/like.routes";
+import { deleteRequestRoutes } from "./routes/delete-request.routes";
 
 export const app = Fastify({ logger: true });
 
@@ -44,11 +46,14 @@ app.register(reviewRoutes, { prefix: "/api/reviews" });
 app.register(rentalRoutes, { prefix: "/api/rentals" });
 app.register(statsRoutes, { prefix: "/api/admin/stats" });
 app.register(uploadRoutes, { prefix: "/api/upload" });
+app.register(likeRoutes, { prefix: "/api/likes" });
+app.register(deleteRequestRoutes, { prefix: "/api/delete-requests" });
 
 // Aliases for backward compatibility with the frontend
 app.register(productRoutes, { prefix: "/api/admin/products" });
 app.register(categoryRoutes, { prefix: "/api/admin/categories" });
 app.register(reviewRoutes, { prefix: "/api/admin/reviews" });
+
 
 // Legacy redirects
 app.get("/api/my-rentals", async (req, reply) => reply.redirect("/api/rentals/my"));

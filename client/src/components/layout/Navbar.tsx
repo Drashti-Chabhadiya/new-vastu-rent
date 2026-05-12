@@ -5,7 +5,7 @@ import { authClient } from "#/lib/auth/auth-client"
 import { Link } from "@tanstack/react-router"
 import { useState, useEffect } from "react"
 import { Heart, Folder, ShoppingBag, Package } from "lucide-react"
-import { useCategories } from "#/hook"
+import { useCategories, useWishlist } from "#/hook"
 import { CategoryIcon } from "#/components/common/CategoryIcon"
 
 const navLinks = [
@@ -23,6 +23,7 @@ export function Navbar() {
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
 
   const { data: categories } = useCategories()
+  const { count } = useWishlist()
 
   useEffect(() => {
     authClient.getSession().then((res) => {
@@ -123,12 +124,14 @@ export function Navbar() {
           {/* Right Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Wishlist */}
-            <button className="relative hidden p-2 text-gray-600 hover:text-gray-900 lg:flex items-center">
+            <Link to="/wishlist" className="relative hidden p-2 text-gray-600 hover:text-gray-900 lg:flex items-center no-underline">
               <Heart className="h-5 w-5 sm:h-6 sm:w-6 stroke-[1.5]" />
-              <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-brand-light text-[10px] font-bold text-white border-2 border-white">
-                2
-              </span>
-            </button>
+              {count > 0 && (
+                <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-brand-light text-[10px] font-bold text-white border-2 border-white">
+                  {count}
+                </span>
+              )}
+            </Link>
 
           
 
@@ -311,6 +314,23 @@ export function Navbar() {
                 )}
               </li>
             ))}
+            <li>
+              <Link
+                to="/wishlist"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold no-underline transition-colors text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+              >
+                <div className="flex items-center gap-2">
+                  <Heart className="h-4 w-4" />
+                  Wishlist
+                </div>
+                {count > 0 && (
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand text-[10px] font-bold text-white">
+                    {count}
+                  </span>
+                )}
+              </Link>
+            </li>
           </ul>
 
           <div className="mt-6 pt-6 border-t border-gray-100 space-y-3">

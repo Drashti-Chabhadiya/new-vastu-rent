@@ -1,8 +1,9 @@
 import { prisma } from "../config/prisma";
 
 export class ReviewService {
-  async getAllReviews(search?: string) {
+  async getAllReviews(search?: string, productId?: string) {
     const where: any = {};
+    if (productId) where.productId = productId;
     if (search) {
       where.OR = [
         { comment: { contains: search, mode: 'insensitive' } },
@@ -28,6 +29,7 @@ export class ReviewService {
   async createReview(data: { rating: number; comment?: string; productId: string; userId: string }) {
     return prisma.review.create({
       data,
+      include: { user: { select: { id: true, name: true, image: true } } },
     });
   }
 }

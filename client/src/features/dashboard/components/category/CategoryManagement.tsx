@@ -20,6 +20,7 @@ import {
 } from '#/hook'
 import { CategoryFormDialog } from './CategoryFormDialog'
 import { DeleteConfirmDialog } from './DeleteConfirmDialog'
+import { authClient } from '#/lib/auth/auth-client'
 
 interface CategoryManagementProps {
   onManageCategory?: (categoryId: string) => void
@@ -35,17 +36,22 @@ export const CategoryManagement = ({ onManageCategory }: CategoryManagementProps
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const { data: categories, isLoading } = useAdminCategories();
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  const isAdmin = user?.role === 'admin' || user?.role === 'superAdmin';
 
   const createMutation = useCreateCategory();
   const updateMutation = useUpdateCategory();
   const deleteMutation = useDeleteCategory();
 
   const handleOpenAdd = () => {
+    if (!isAdmin) return;
     setEditingCategory(null)
     setIsDialogOpen(true)
   }
 
   const handleOpenEdit = (category: any) => {
+    if (!isAdmin) return;
     setEditingCategory(category)
     setIsDialogOpen(true)
   }
@@ -137,13 +143,15 @@ export const CategoryManagement = ({ onManageCategory }: CategoryManagementProps
           />
         </div>
 
-        <Button
-          onClick={handleOpenAdd}
-          className="bg-dash-brand hover:bg-dash-brand/90 text-white rounded-xl h-12 px-8 font-bold shadow-md shadow-dash-brand/10 flex items-center gap-2 transition-all active:scale-[0.98]"
-        >
-          <Plus size={20} strokeWidth={2.5} />
-          Add Category
-        </Button>
+        {isAdmin && (
+          <Button
+            onClick={handleOpenAdd}
+            className="bg-dash-brand hover:bg-dash-brand/90 text-white rounded-xl h-12 px-8 font-bold shadow-md shadow-dash-brand/10 flex items-center gap-2 transition-all active:scale-[0.98]"
+          >
+            <Plus size={20} strokeWidth={2.5} />
+            Add Category
+          </Button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -200,27 +208,29 @@ export const CategoryManagement = ({ onManageCategory }: CategoryManagementProps
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleOpenEdit(category)}
-                    className="h-9 w-9 text-gray-400 hover:text-dash-brand hover:bg-dash-brand/10 rounded-xl"
-                  >
-                    <Edit2 size={18} />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setCategoryToDelete(category)
-                      setIsDeleteDialogOpen(true)
-                    }}
-                    className="h-9 w-9 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl"
-                  >
-                    <Trash2 size={18} />
-                  </Button>
-                </div>
+                {isAdmin && (
+                  <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleOpenEdit(category)}
+                      className="h-9 w-9 text-gray-400 hover:text-dash-brand hover:bg-dash-brand/10 rounded-xl"
+                    >
+                      <Edit2 size={18} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setCategoryToDelete(category)
+                        setIsDeleteDialogOpen(true)
+                      }}
+                      className="h-9 w-9 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl"
+                    >
+                      <Trash2 size={18} />
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <div 

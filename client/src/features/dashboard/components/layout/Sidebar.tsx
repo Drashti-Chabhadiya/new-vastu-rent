@@ -15,7 +15,8 @@ import {
   ChevronRight,
   TrendingUp,
   ChevronDown,
-  X
+  X,
+  Trash2
 } from 'lucide-react';
 import { cn } from '#/lib/utils';
 
@@ -84,7 +85,9 @@ export const Sidebar = ({ currentTab, onTabChange, isOpen, onClose }: SidebarPro
           <div>
             <h1 className="text-xl font-bold text-dash-text leading-none">vastu-rent</h1>
             <p className="text-[10px] text-dash-text-muted mt-1 tracking-wider uppercase font-semibold">
-              {user?.role === 'superAdmin' ? 'Super Admin' : 'Admin'} Dashboard
+              {user?.role === 'superAdmin' ? 'Super Admin' : 
+               user?.role === 'admin' ? 'Admin' : 
+               user?.role === 'owner' ? 'Owner' : 'User'} Dashboard
             </p>
           </div>
         </div>
@@ -107,13 +110,15 @@ export const Sidebar = ({ currentTab, onTabChange, isOpen, onClose }: SidebarPro
           active={currentTab === 'overview'} 
           onClick={() => onTabChange('overview')}
         />
-        <NavItem 
-          icon={Users} 
-          label="Users" 
-          active={currentTab === 'users'} 
-          onClick={() => onTabChange('users')}
-          hasSubmenu 
-        />
+        {(user?.role === 'admin' || user?.role === 'superAdmin') && (
+          <NavItem 
+            icon={Users} 
+            label="Users" 
+            active={currentTab === 'users'} 
+            onClick={() => onTabChange('users')}
+            hasSubmenu 
+          />
+        )}
         <NavItem 
           icon={List} 
           label="Listings" 
@@ -121,16 +126,38 @@ export const Sidebar = ({ currentTab, onTabChange, isOpen, onClose }: SidebarPro
           onClick={() => onTabChange('listings')}
           hasSubmenu 
         />
+        {(user?.role === 'admin' || user?.role === 'superAdmin') && (
+          <NavItem 
+            icon={Grid} 
+            label="Categories" 
+            active={currentTab === 'categories'}
+            onClick={() => onTabChange('categories')}
+            hasSubmenu 
+          />
+        )}
+        {(user?.role === 'owner' || user?.role === 'admin' || user?.role === 'superAdmin') && (
+          <NavItem 
+            icon={ShoppingCart} 
+            label="Orders" 
+            active={currentTab === 'orders'}
+            onClick={() => onTabChange('orders')}
+            hasSubmenu 
+          />
+        )}
         <NavItem 
-          icon={Grid} 
-          label="Categories" 
-          active={currentTab === 'categories'}
-          onClick={() => onTabChange('categories')}
+          icon={Calendar} 
+          label="My Bookings" 
+          active={currentTab === 'bookings'}
+          onClick={() => onTabChange('bookings')}
           hasSubmenu 
         />
-        <NavItem icon={ShoppingCart} label="Orders" hasSubmenu />
-        <NavItem icon={Calendar} label="Bookings" hasSubmenu />
-        <NavItem icon={CreditCard} label="Payments" hasSubmenu />
+        <NavItem 
+          icon={CreditCard} 
+          label="Payments" 
+          active={currentTab === 'payments'}
+          onClick={() => onTabChange('payments')}
+          hasSubmenu 
+        />
         <NavItem 
           icon={Star} 
           label="Reviews" 
@@ -138,11 +165,47 @@ export const Sidebar = ({ currentTab, onTabChange, isOpen, onClose }: SidebarPro
           onClick={() => onTabChange('reviews')}
           hasSubmenu 
         />
-        <NavItem icon={AlertCircle} label="Disputes" hasSubmenu />
-        <NavItem icon={Ticket} label="Coupons" />
-        <NavItem icon={Bell} label="Notifications" />
-        <NavItem icon={BarChart3} label="Reports" hasSubmenu />
-        <NavItem icon={Settings} label="Settings" hasSubmenu />
+        <NavItem 
+          icon={AlertCircle} 
+          label="Disputes" 
+          active={currentTab === 'disputes'}
+          onClick={() => onTabChange('disputes')}
+          hasSubmenu 
+        />
+        {user?.role === 'superAdmin' && (
+          <NavItem 
+            icon={Trash2} 
+            label="Delete Requests" 
+            active={currentTab === 'delete-requests'}
+            onClick={() => onTabChange('delete-requests')}
+          />
+        )}
+        <NavItem 
+          icon={Ticket} 
+          label="Coupons" 
+          active={currentTab === 'coupons'}
+          onClick={() => onTabChange('coupons')}
+        />
+        <NavItem 
+          icon={Bell} 
+          label="Notifications" 
+          active={currentTab === 'notifications'}
+          onClick={() => onTabChange('notifications')}
+        />
+        <NavItem 
+          icon={BarChart3} 
+          label="Reports" 
+          active={currentTab === 'reports'}
+          onClick={() => onTabChange('reports')}
+          hasSubmenu 
+        />
+        <NavItem 
+          icon={Settings} 
+          label="Settings" 
+          active={currentTab === 'settings'}
+          onClick={() => onTabChange('settings')}
+          hasSubmenu 
+        />
       </div>
 
       {/* Premium Card */}

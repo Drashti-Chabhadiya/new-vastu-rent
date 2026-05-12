@@ -44,9 +44,11 @@ interface ProductFormProps {
   form: UseFormReturn<ListingSchema, any, any>
   categories: Category[]
   users: User[]
+  currentUser?: any
 }
 
-export const ProductForm = ({ form, categories, users }: ProductFormProps) => {
+export const ProductForm = ({ form, categories, users, currentUser }: ProductFormProps) => {
+  const isOwner = currentUser?.role === 'owner';
   return (
     <div className="space-y-6">
       {/* Hero Preview Section */}
@@ -219,29 +221,47 @@ export const ProductForm = ({ form, categories, users }: ProductFormProps) => {
               <Select
                 onValueChange={field.onChange}
                 value={field.value as string}
+                disabled={isOwner}
               >
                 <FormControl>
-                  <SelectTrigger className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-white text-[15px] text-gray-900 focus:ring-1 focus:ring-dash-brand/30 font-medium shadow-sm hover:bg-gray-50/50 transition-all">
-                    <SelectValue placeholder="Select Owner" />
+                  <SelectTrigger className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-white text-[15px] text-gray-900 focus:ring-1 focus:ring-dash-brand/30 font-medium shadow-sm hover:bg-gray-50/50 transition-all disabled:opacity-100 disabled:bg-gray-50">
+                    <SelectValue placeholder={isOwner ? currentUser.name : "Select Owner"} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className="bg-white rounded-2xl shadow-2xl border-none p-2 animate-in fade-in zoom-in-95 duration-200">
-                  {users?.map((user) => (
+                  {isOwner ? (
                     <SelectItem
-                      key={user.id}
-                      value={user.id}
+                      key={currentUser.id}
+                      value={currentUser.id}
                       className="rounded-xl py-3 px-4 focus:bg-dash-brand/10 focus:text-dash-brand cursor-pointer"
                     >
                       <div className="flex flex-col">
                         <span className="font-extrabold text-dash-text text-sm">
-                          {user.name || user.email}
+                          {currentUser.name || currentUser.email}
                         </span>
                         <span className="text-[10px] text-dash-text-soft opacity-60 uppercase tracking-widest font-black mt-0.5">
-                          {user.role}
+                          {currentUser.role}
                         </span>
                       </div>
                     </SelectItem>
-                  ))}
+                  ) : (
+                    users?.map((user) => (
+                      <SelectItem
+                        key={user.id}
+                        value={user.id}
+                        className="rounded-xl py-3 px-4 focus:bg-dash-brand/10 focus:text-dash-brand cursor-pointer"
+                      >
+                        <div className="flex flex-col">
+                          <span className="font-extrabold text-dash-text text-sm">
+                            {user.name || user.email}
+                          </span>
+                          <span className="text-[10px] text-dash-text-soft opacity-60 uppercase tracking-widest font-black mt-0.5">
+                            {user.role}
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />

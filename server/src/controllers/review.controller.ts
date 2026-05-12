@@ -3,8 +3,8 @@ import { reviewService } from "../services/review.service";
 
 export class ReviewController {
   async getAllReviews(request: FastifyRequest, reply: FastifyReply) {
-    const { search } = request.query as any;
-    const reviews = await reviewService.getAllReviews(search);
+    const { search, productId } = request.query as any;
+    const reviews = await reviewService.getAllReviews(search, productId);
     return { reviews };
   }
 

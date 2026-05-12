@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PackagePlus } from "lucide-react";
@@ -33,6 +34,7 @@ interface AddListingDialogProps {
   isLoading: boolean;
   categories: Category[];
   users: User[];
+  currentUser?: any;
 }
 
 export const AddListingDialog = ({
@@ -42,6 +44,7 @@ export const AddListingDialog = ({
   isLoading,
   categories,
   users,
+  currentUser,
 }: AddListingDialogProps) => {
   const form = useForm<ListingSchema>({
     resolver: zodResolver(listingSchema) as any,
@@ -55,6 +58,21 @@ export const AddListingDialog = ({
       images: [],
     },
   });
+
+  // Reset form when dialog opens
+  useEffect(() => {
+    if (open) {
+      form.reset({
+        title: "",
+        description: "",
+        price: 0,
+        location: "",
+        categoryId: "",
+        ownerId: currentUser?.role === 'owner' ? currentUser.id : "",
+        images: [],
+      });
+    }
+  }, [open, currentUser, form]);
 
   const handleFormSubmit: SubmitHandler<ListingSchema> = (values) => {
     onSubmit(values);
@@ -82,7 +100,7 @@ export const AddListingDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit((values) => handleFormSubmit(values))} className="p-8 space-y-8">
             {/* The actual form fields are abstracted here for reusability */}
-            <ProductForm form={form} categories={categories} users={users} />
+            <ProductForm form={form} categories={categories} users={users} currentUser={currentUser} />
 
             <DialogFooter className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center gap-4">
               <Button 

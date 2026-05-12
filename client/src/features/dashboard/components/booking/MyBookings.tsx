@@ -1,0 +1,142 @@
+import { useMyRentals } from '#/hook';
+import { 
+  Calendar, 
+  MapPin, 
+  IndianRupee, 
+  Clock, 
+  ChevronRight,
+  CheckCircle2,
+  XCircle,
+  AlertCircle
+} from 'lucide-react';
+import { format } from 'date-fns';
+import { Badge } from '#/components/ui/badge';
+
+export const MyBookings = () => {
+  const { data: rentals, isLoading } = useMyRentals();
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-32 bg-white rounded-2xl animate-pulse border border-gray-100" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!rentals || rentals.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[2rem] border border-dashed border-gray-200">
+        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+          <Calendar className="text-gray-300" size={40} />
+        </div>
+        <h3 className="text-xl font-bold text-dash-text">No Bookings Yet</h3>
+        <p className="text-dash-text-soft mt-2 max-w-xs text-center font-medium">
+          You haven't rented any products yet. Browse the marketplace to find items for rent!
+        </p>
+      </div>
+    );
+  }
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'active':
+        return <Badge className="bg-blue-50 text-blue-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><Clock size={12} /> Active</Badge>;
+      case 'completed':
+        return <Badge className="bg-green-50 text-green-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><CheckCircle2 size={12} /> Completed</Badge>;
+      case 'cancelled':
+        return <Badge className="bg-red-50 text-red-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><XCircle size={12} /> Cancelled</Badge>;
+      default:
+        return <Badge className="bg-yellow-50 text-yellow-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><AlertCircle size={12} /> Pending</Badge>;
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h2 className="text-2xl font-extrabold text-dash-text flex items-center gap-3">
+            <Calendar className="text-dash-brand" size={28} />
+            My Bookings
+          </h2>
+          <p className="text-dash-text-soft text-sm font-medium">
+            Manage and track your active and past rental items.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid gap-4">
+        {rentals.map((rental: any) => (
+          <div 
+            key={rental.id}
+            className="group bg-white p-5 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:border-dash-brand/20 transition-all duration-300"
+          >
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Product Info */}
+              <div className="flex gap-4 flex-1">
+                <div className="w-24 h-24 rounded-2xl overflow-hidden shadow-inner flex-shrink-0">
+                  <img 
+                    src={rental.product.images[0]} 
+                    alt={rental.product.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="flex flex-col justify-between py-1">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-dash-brand bg-dash-brand/10 px-2 py-0.5 rounded-md">
+                        {rental.product.category.name}
+                      </span>
+                      {getStatusBadge(rental.status)}
+                    </div>
+                    <h4 className="text-lg font-extrabold text-dash-text group-hover:text-dash-brand transition-colors">
+                      {rental.product.title}
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-4 text-dash-text-soft text-[13px] font-bold">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin size={14} className="text-dash-brand" />
+                      {rental.product.location}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Date & Price Info */}
+              <div className="flex flex-wrap md:flex-nowrap items-center gap-8 md:gap-12 px-2">
+                <div className="flex items-center gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-dash-text-soft uppercase tracking-wider mb-1">Start Date</span>
+                    <span className="text-sm font-extrabold text-dash-text">
+                      {format(new Date(rental.startDate), 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                  <ChevronRight size={16} className="text-dash-text-muted mt-4" />
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-dash-text-soft uppercase tracking-wider mb-1">End Date</span>
+                    <span className="text-sm font-extrabold text-dash-text">
+                      {format(new Date(rental.endDate), 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-end min-w-[100px]">
+                  <span className="text-[10px] font-black text-dash-text-soft uppercase tracking-wider mb-1">Total Paid</span>
+                  <div className="text-xl font-black text-dash-brand flex items-center">
+                    <IndianRupee size={18} strokeWidth={3} />
+                    {rental.totalPrice.toLocaleString()}
+                  </div>
+                </div>
+
+                <button className="h-12 w-12 rounded-2xl bg-gray-50 flex items-center justify-center text-dash-text-soft hover:bg-dash-brand hover:text-white transition-all duration-300">
+                  <ChevronRight size={20} strokeWidth={3} />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

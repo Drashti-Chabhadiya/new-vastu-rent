@@ -12,7 +12,8 @@ interface ListingsTableProps {
   products: any[];
   isLoading: boolean;
   onToggleStatus: (id: string, isAvailable: boolean) => void;
-  onDelete: (id: string) => void;
+  onDelete: (product: any) => void;
+  currentUser: any;
 }
 
 export const ListingsTable = ({
@@ -20,6 +21,7 @@ export const ListingsTable = ({
   isLoading,
   onToggleStatus,
   onDelete,
+  currentUser,
 }: ListingsTableProps) => {
   return (
     <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
@@ -113,8 +115,14 @@ export const ListingsTable = ({
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      onClick={() => onDelete(item.id)}
-                      className="w-8 h-8 rounded-lg text-dash-text-soft hover:bg-red-50 hover:text-red-500 transition-all"
+                      onClick={() => onDelete(item)}
+                      className={cn(
+                        "w-8 h-8 rounded-lg transition-all",
+                        currentUser?.role === 'superAdmin' || item.ownerId === currentUser?.id
+                          ? "text-dash-text-soft hover:bg-red-50 hover:text-red-500"
+                          : "text-dash-text-soft hover:bg-orange-50 hover:text-orange-500"
+                      )}
+                      title={currentUser?.role === 'superAdmin' || item.ownerId === currentUser?.id ? "Delete Listing" : "Request Deletion"}
                     >
                       <Trash2 size={14} />
                     </Button>

@@ -1,9 +1,14 @@
 import { prisma } from "../config/prisma";
 
 export class ProductService {
-  async getAllProducts(filters: { search?: string; categoryId?: string; status?: string; minPrice?: string; maxPrice?: string; isAvailable?: boolean }) {
-    const { search, categoryId, status, minPrice, maxPrice, isAvailable } = filters;
+  async getAllProducts(filters: { search?: string; categoryId?: string; status?: string; minPrice?: string; maxPrice?: string; isAvailable?: boolean; ids?: string | string[] }) {
+    const { search, categoryId, status, minPrice, maxPrice, isAvailable, ids } = filters;
     const where: any = {};
+
+    if (ids) {
+      const idArray = Array.isArray(ids) ? ids : ids.split(',');
+      where.id = { in: idArray };
+    }
 
     if (isAvailable !== undefined) where.isAvailable = isAvailable;
     
@@ -92,7 +97,14 @@ export class ProductService {
     const product = await prisma.product.findUnique({ where: { id } });
     if (!product) throw new Error("Product not found");
 
-    if (userId && role && product.ownerId !== userId && role !== "admin" && role !== "superAdmin") {
+    const isOwner = userId && product.ownerId === userId;
+    const isSuperAdmin = role === "superAdmin";
+    const isAdmin = role === "admin";
+
+    if (!isOwner && !isSuperAdmin) {
+      if (isAdmin) {
+        throw new Error("Forbidden: Admin must request SuperAdmin approval to delete products they do not own");
+      }
       throw new Error("Forbidden: You do not own this listing");
     }
 

@@ -39,6 +39,8 @@ model User {
   products      Product[] // User એ લિસ્ટ કરેલી વસ્તુઓ (Owner)
   rentals       Rental[]  // User એ ભાડે લીધેલી વસ્તુઓ (Renter)
   reviews       Review[]  // User એ આપેલા Reviews
+  likes         Like[]    // User એ લાઈક કરેલી વસ્તુઓ
+  deleteRequests DeleteProductRequest[] @relation("AdminRequests")
 
   @@map("user")
 }
@@ -108,6 +110,8 @@ model Product {
   
   rentals     Rental[]
   reviews     Review[]
+  likes       Like[]
+  deleteRequests DeleteProductRequest[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -151,8 +155,33 @@ model Verification {
   value      String
   expiresAt  DateTime
 
-createdAt  DateTime @default(now())
+  createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   @@map("verification")
+}
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("like")
+}
+
+model DeleteProductRequest {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  adminId     String
+  admin       User     @relation("AdminRequests", fields: [adminId], references: [id])
+  status      String   @default("pending") // "pending", "approved", "rejected"
+  reason      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("delete_product_request")
 }

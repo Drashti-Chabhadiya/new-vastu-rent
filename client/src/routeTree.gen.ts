@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProductsRouteImport } from './routes/products'
@@ -20,13 +21,20 @@ import { Route as BecomeListerRouteImport } from './routes/become-lister'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile.index'
+import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProfileSettingsRouteImport } from './routes/profile.settings'
 import { Route as ProfileListingsRouteImport } from './routes/profile.listings'
 import { Route as ProfileBookingsRouteImport } from './routes/profile.bookings'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as CategoriesIdRouteImport } from './routes/categories.$id'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
+import { Route as ProfileListingsIndexRouteImport } from './routes/profile.listings.index'
 
+const WishlistRoute = WishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -82,6 +90,11 @@ const ProfileIndexRoute = ProfileIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProfileRoute,
 } as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProductsRoute,
+} as any)
 const ProfileSettingsRoute = ProfileSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -112,6 +125,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/admin/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileListingsIndexRoute = ProfileListingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProfileListingsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -124,13 +142,16 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRouteWithChildren
   '/profile': typeof ProfileRouteWithChildren
   '/signup': typeof SignupRoute
+  '/wishlist': typeof WishlistRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/categories/$id': typeof CategoriesIdRoute
   '/products/$id': typeof ProductsIdRoute
   '/profile/bookings': typeof ProfileBookingsRoute
-  '/profile/listings': typeof ProfileListingsRoute
+  '/profile/listings': typeof ProfileListingsRouteWithChildren
   '/profile/settings': typeof ProfileSettingsRoute
+  '/products/': typeof ProductsIndexRoute
   '/profile/': typeof ProfileIndexRoute
+  '/profile/listings/': typeof ProfileListingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,15 +161,16 @@ export interface FileRoutesByTo {
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
-  '/products': typeof ProductsRouteWithChildren
   '/signup': typeof SignupRoute
+  '/wishlist': typeof WishlistRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/categories/$id': typeof CategoriesIdRoute
   '/products/$id': typeof ProductsIdRoute
   '/profile/bookings': typeof ProfileBookingsRoute
-  '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
+  '/products': typeof ProductsIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/profile/listings': typeof ProfileListingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -162,13 +184,16 @@ export interface FileRoutesById {
   '/products': typeof ProductsRouteWithChildren
   '/profile': typeof ProfileRouteWithChildren
   '/signup': typeof SignupRoute
+  '/wishlist': typeof WishlistRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/categories/$id': typeof CategoriesIdRoute
   '/products/$id': typeof ProductsIdRoute
   '/profile/bookings': typeof ProfileBookingsRoute
-  '/profile/listings': typeof ProfileListingsRoute
+  '/profile/listings': typeof ProfileListingsRouteWithChildren
   '/profile/settings': typeof ProfileSettingsRoute
+  '/products/': typeof ProductsIndexRoute
   '/profile/': typeof ProfileIndexRoute
+  '/profile/listings/': typeof ProfileListingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -183,13 +208,16 @@ export interface FileRouteTypes {
     | '/products'
     | '/profile'
     | '/signup'
+    | '/wishlist'
     | '/admin/dashboard'
     | '/categories/$id'
     | '/products/$id'
     | '/profile/bookings'
     | '/profile/listings'
     | '/profile/settings'
+    | '/products/'
     | '/profile/'
+    | '/profile/listings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,15 +227,16 @@ export interface FileRouteTypes {
     | '/help'
     | '/how-it-works'
     | '/login'
-    | '/products'
     | '/signup'
+    | '/wishlist'
     | '/admin/dashboard'
     | '/categories/$id'
     | '/products/$id'
     | '/profile/bookings'
-    | '/profile/listings'
     | '/profile/settings'
+    | '/products'
     | '/profile'
+    | '/profile/listings'
   id:
     | '__root__'
     | '/'
@@ -220,13 +249,16 @@ export interface FileRouteTypes {
     | '/products'
     | '/profile'
     | '/signup'
+    | '/wishlist'
     | '/admin/dashboard'
     | '/categories/$id'
     | '/products/$id'
     | '/profile/bookings'
     | '/profile/listings'
     | '/profile/settings'
+    | '/products/'
     | '/profile/'
+    | '/profile/listings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -240,11 +272,19 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRouteWithChildren
   ProfileRoute: typeof ProfileRouteWithChildren
   SignupRoute: typeof SignupRoute
+  WishlistRoute: typeof WishlistRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wishlist': {
+      id: '/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof WishlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -322,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof ProfileRoute
     }
+    '/products/': {
+      id: '/products/'
+      path: '/'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof ProductsRoute
+    }
     '/profile/settings': {
       id: '/profile/settings'
       path: '/settings'
@@ -364,6 +411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile/listings/': {
+      id: '/profile/listings/'
+      path: '/'
+      fullPath: '/profile/listings/'
+      preLoaderRoute: typeof ProfileListingsIndexRouteImport
+      parentRoute: typeof ProfileListingsRoute
+    }
   }
 }
 
@@ -381,26 +435,40 @@ const CategoriesRouteWithChildren = CategoriesRoute._addFileChildren(
 
 interface ProductsRouteChildren {
   ProductsIdRoute: typeof ProductsIdRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
   ProductsIdRoute: ProductsIdRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
 }
 
 const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
   ProductsRouteChildren,
 )
 
+interface ProfileListingsRouteChildren {
+  ProfileListingsIndexRoute: typeof ProfileListingsIndexRoute
+}
+
+const ProfileListingsRouteChildren: ProfileListingsRouteChildren = {
+  ProfileListingsIndexRoute: ProfileListingsIndexRoute,
+}
+
+const ProfileListingsRouteWithChildren = ProfileListingsRoute._addFileChildren(
+  ProfileListingsRouteChildren,
+)
+
 interface ProfileRouteChildren {
   ProfileBookingsRoute: typeof ProfileBookingsRoute
-  ProfileListingsRoute: typeof ProfileListingsRoute
+  ProfileListingsRoute: typeof ProfileListingsRouteWithChildren
   ProfileSettingsRoute: typeof ProfileSettingsRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
 const ProfileRouteChildren: ProfileRouteChildren = {
   ProfileBookingsRoute: ProfileBookingsRoute,
-  ProfileListingsRoute: ProfileListingsRoute,
+  ProfileListingsRoute: ProfileListingsRouteWithChildren,
   ProfileSettingsRoute: ProfileSettingsRoute,
   ProfileIndexRoute: ProfileIndexRoute,
 }
@@ -419,6 +487,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRouteWithChildren,
   ProfileRoute: ProfileRouteWithChildren,
   SignupRoute: SignupRoute,
+  WishlistRoute: WishlistRoute,
   AdminDashboardRoute: AdminDashboardRoute,
 }
 export const routeTree = rootRouteImport

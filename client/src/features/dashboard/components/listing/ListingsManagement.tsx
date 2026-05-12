@@ -17,8 +17,11 @@ import {
   useAdminProducts, 
   useCreateProduct, 
   useToggleProductStatus, 
-  useDeleteProduct 
+  useDeleteProduct,
+  useCreateDeleteRequest
 } from '#/hook';
+import { authClient } from '#/lib/auth/auth-client';
+import { toast } from 'sonner';
 
 interface ListingsManagementProps {
   initialCategoryFilter?: string | null;
@@ -50,10 +53,44 @@ export const ListingsManagement = ({ initialCategoryFilter }: ListingsManagement
     status: statusFilter === 'all' ? undefined : statusFilter
   });
 
+  // Auth
+  const { data: session } = authClient.useSession();
+  const currentUser = session?.user;
+
   // Mutations
   const createMutation = useCreateProduct();
   const toggleStatusMutation = useToggleProductStatus();
   const deleteMutation = useDeleteProduct();
+  const createDeleteRequestMutation = useCreateDeleteRequest();
+
+  const handleDelete = (product: any) => {
+    if (!currentUser) return;
+
+    const isOwner = product.ownerId === currentUser.id;
+    const isSuperAdmin = currentUser.role === 'superAdmin';
+    const isAdmin = currentUser.role === 'admin';
+
+    if (isSuperAdmin || isOwner) {
+      if (window.confirm("Are you sure you want to delete this listing?")) {
+        deleteMutation.mutate(product.id, {
+          onSuccess: () => toast.success("Listing deleted successfully"),
+          onError: () => toast.error("Failed to delete listing")
+        });
+      }
+    } else if (isAdmin) {
+      if (window.confirm("You don't own this listing. Do you want to request SuperAdmin to delete it?")) {
+        createDeleteRequestMutation.mutate({ 
+          productId: product.id, 
+          reason: `Admin ${currentUser.name} requested deletion` 
+        }, {
+          onSuccess: () => toast.success("Deletion request sent to SuperAdmin"),
+          onError: (err: any) => toast.error(err.response?.data?.message || "Failed to send request")
+        });
+      }
+    } else {
+      toast.error("You don't have permission to delete this listing");
+    }
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -128,7 +165,8 @@ export const ListingsManagement = ({ initialCategoryFilter }: ListingsManagement
         products={products} 
         isLoading={isLoading} 
         onToggleStatus={(id, isAvailable) => toggleStatusMutation.mutate({ id, isAvailable })}
-        onDelete={(id) => deleteMutation.mutate(id)}
+        onDelete={handleDelete}
+        currentUser={currentUser}
       />
 
       {/* Add Listing Dialog Component */}
@@ -139,6 +177,7 @@ export const ListingsManagement = ({ initialCategoryFilter }: ListingsManagement
         isLoading={createMutation.isPending}
         categories={categories || []}
         users={users || []}
+        currentUser={currentUser}
       />
     </div>
   );
