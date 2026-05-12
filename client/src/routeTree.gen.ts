@@ -28,7 +28,6 @@ import { Route as ProfileBookingsRouteImport } from './routes/profile.bookings'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as CategoriesIdRouteImport } from './routes/categories.$id'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
-import { Route as ProfileListingsIndexRouteImport } from './routes/profile.listings.index'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -125,11 +124,6 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/admin/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileListingsIndexRoute = ProfileListingsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProfileListingsRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -147,11 +141,10 @@ export interface FileRoutesByFullPath {
   '/categories/$id': typeof CategoriesIdRoute
   '/products/$id': typeof ProductsIdRoute
   '/profile/bookings': typeof ProfileBookingsRoute
-  '/profile/listings': typeof ProfileListingsRouteWithChildren
+  '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
   '/products/': typeof ProductsIndexRoute
   '/profile/': typeof ProfileIndexRoute
-  '/profile/listings/': typeof ProfileListingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -167,10 +160,10 @@ export interface FileRoutesByTo {
   '/categories/$id': typeof CategoriesIdRoute
   '/products/$id': typeof ProductsIdRoute
   '/profile/bookings': typeof ProfileBookingsRoute
+  '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
   '/products': typeof ProductsIndexRoute
   '/profile': typeof ProfileIndexRoute
-  '/profile/listings': typeof ProfileListingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -189,11 +182,10 @@ export interface FileRoutesById {
   '/categories/$id': typeof CategoriesIdRoute
   '/products/$id': typeof ProductsIdRoute
   '/profile/bookings': typeof ProfileBookingsRoute
-  '/profile/listings': typeof ProfileListingsRouteWithChildren
+  '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
   '/products/': typeof ProductsIndexRoute
   '/profile/': typeof ProfileIndexRoute
-  '/profile/listings/': typeof ProfileListingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -217,7 +209,6 @@ export interface FileRouteTypes {
     | '/profile/settings'
     | '/products/'
     | '/profile/'
-    | '/profile/listings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -233,10 +224,10 @@ export interface FileRouteTypes {
     | '/categories/$id'
     | '/products/$id'
     | '/profile/bookings'
+    | '/profile/listings'
     | '/profile/settings'
     | '/products'
     | '/profile'
-    | '/profile/listings'
   id:
     | '__root__'
     | '/'
@@ -258,7 +249,6 @@ export interface FileRouteTypes {
     | '/profile/settings'
     | '/products/'
     | '/profile/'
-    | '/profile/listings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -411,13 +401,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile/listings/': {
-      id: '/profile/listings/'
-      path: '/'
-      fullPath: '/profile/listings/'
-      preLoaderRoute: typeof ProfileListingsIndexRouteImport
-      parentRoute: typeof ProfileListingsRoute
-    }
   }
 }
 
@@ -447,28 +430,16 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
   ProductsRouteChildren,
 )
 
-interface ProfileListingsRouteChildren {
-  ProfileListingsIndexRoute: typeof ProfileListingsIndexRoute
-}
-
-const ProfileListingsRouteChildren: ProfileListingsRouteChildren = {
-  ProfileListingsIndexRoute: ProfileListingsIndexRoute,
-}
-
-const ProfileListingsRouteWithChildren = ProfileListingsRoute._addFileChildren(
-  ProfileListingsRouteChildren,
-)
-
 interface ProfileRouteChildren {
   ProfileBookingsRoute: typeof ProfileBookingsRoute
-  ProfileListingsRoute: typeof ProfileListingsRouteWithChildren
+  ProfileListingsRoute: typeof ProfileListingsRoute
   ProfileSettingsRoute: typeof ProfileSettingsRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
 }
 
 const ProfileRouteChildren: ProfileRouteChildren = {
   ProfileBookingsRoute: ProfileBookingsRoute,
-  ProfileListingsRoute: ProfileListingsRouteWithChildren,
+  ProfileListingsRoute: ProfileListingsRoute,
   ProfileSettingsRoute: ProfileSettingsRoute,
   ProfileIndexRoute: ProfileIndexRoute,
 }

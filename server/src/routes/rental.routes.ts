@@ -3,6 +3,9 @@ import { rentalController } from "../controllers/rental.controller";
 import { auth } from "../config/auth";
 
 export async function rentalRoutes(fastify: FastifyInstance) {
+  // Public Routes
+  fastify.get("/product/:productId", rentalController.getProductRentals);
+
   // Protected Routes (Session check)
   fastify.addHook("preHandler", async (request, reply) => {
     const session = await auth.api.getSession({ headers: request.headers as any });

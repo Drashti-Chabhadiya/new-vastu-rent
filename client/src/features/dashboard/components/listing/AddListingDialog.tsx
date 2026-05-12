@@ -56,6 +56,7 @@ export const AddListingDialog = ({
       categoryId: "",
       ownerId: "",
       images: [],
+      securityDeposit: 0,
     },
   });
 
@@ -66,6 +67,7 @@ export const AddListingDialog = ({
         title: "",
         description: "",
         price: 0,
+        securityDeposit: 0,
         location: "",
         categoryId: "",
         ownerId: currentUser?.role === 'owner' ? currentUser.id : "",

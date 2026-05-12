@@ -142,7 +142,7 @@ export const useProcessDeleteRequest = () => {
 export const useCreateRental = () => {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (data: { productId: string; startDate: string; endDate: string; totalPrice: number }) => {
+    mutationFn: async (data: { productId: string; startDate: string; endDate: string; totalPrice: number; rentalFee: number; depositAmount: number; paymentMethod?: string }) => {
       const res = await apiClient.post('/rentals', data)
       return res.data.rental
     },
@@ -196,5 +196,17 @@ export const useUpdateRentalStatus = () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] })
       queryClient.invalidateQueries({ queryKey: ['my-rentals'] })
     }
+  })
+}
+
+// Get rentals for a specific product (to block dates)
+export const useProductRentals = (productId: string) => {
+  return useQuery({
+    queryKey: ['product-rentals', productId],
+    queryFn: async () => {
+      const res = await apiClient.get('/rentals/product/' + productId)
+      return res.data.rentals
+    },
+    enabled: !!productId
   })
 }

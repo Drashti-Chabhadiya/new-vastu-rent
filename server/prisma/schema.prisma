@@ -98,6 +98,7 @@ model Product {
   title       String   // e.g., "Canon EOS R5" or "Designer Wedding Dress"
   description String
   price       Float    // Rent per day/hour
+  securityDeposit Float @default(0) // Refundable deposit
   location    String   // કઈ જગ્યાએ વસ્તુ ઉપલબ્ધ છે
   images      String[] // Image URLs
   isAvailable Boolean  @default(true)
@@ -127,9 +128,20 @@ model Rental {
   startDate  DateTime
   endDate    DateTime
   totalPrice Float
-  status     String   @default("pending") // "active", "completed", "cancelled"
+  rentalFee  Float    // Actual rental cost (price * duration)
+  depositAmount Float @default(0) // Security deposit paid
+  
+  status     String   @default("pending") // "pending", "confirmed", "picked_up", "in_use", "returned", "completed", "cancelled"
+  paymentStatus String @default("pending") // "pending", "partial", "paid", "refunded"
+  paymentMethod String @default("online")  // "online", "cash"
+  
+  pickupOTP  String?
+  returnOTP  String?
+  
+  transactionId String? // Razorpay transaction ID
   
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Review {

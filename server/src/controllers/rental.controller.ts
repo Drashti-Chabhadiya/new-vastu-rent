@@ -58,6 +58,12 @@ export class RentalController {
     const rental = await rentalService.updateRentalStatus(id, status);
     return { rental };
   }
+
+  async getProductRentals(request: FastifyRequest, reply: FastifyReply) {
+    const { productId } = request.params as { productId: string };
+    const rentals = await rentalService.getProductRentals(productId);
+    return { rentals };
+  }
 }
 
 export const rentalController = new RentalController();

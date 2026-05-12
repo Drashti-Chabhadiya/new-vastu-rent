@@ -1,15 +1,23 @@
 import { prisma } from "../config/prisma";
 
 export class RentalService {
-  async createRental(data: { productId: string; renterId: string; startDate: string; endDate: string; totalPrice: number }) {
+  async createRental(data: { productId: string; renterId: string; startDate: string; endDate: string; totalPrice: number; rentalFee: number; depositAmount: number; paymentMethod?: string }) {
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
+
+    // Check if product exists and get its owner
+    const product = await prisma.product.findUnique({
+      where: { id: data.productId }
+    });
+
+    if (!product) throw new Error("Product not found");
+    if (!product.isAvailable) throw new Error("This product is currently not available for rent.");
 
     // Check for overlapping rentals
     const overlappingRental = await prisma.rental.findFirst({
       where: {
         productId: data.productId,
-        status: { not: "cancelled" },
+        status: { notIn: ["cancelled", "returned", "completed"] },
         OR: [
           {
             // Case 1: New rental starts during an existing rental
@@ -24,6 +32,10 @@ export class RentalService {
       throw new Error("This product is already booked for the selected dates.");
     }
 
+    // For COD (Cash), we can set status to confirmed immediately or keep it pending
+    // Let's set it to 'confirmed' but paymentStatus 'pending'
+    const initialStatus = data.paymentMethod === "cash" ? "confirmed" : "pending";
+
     return prisma.rental.create({
       data: {
         productId: data.productId,
@@ -31,8 +43,16 @@ export class RentalService {
         startDate,
         endDate,
         totalPrice: data.totalPrice,
-        status: "pending",
-      },
+        rentalFee: data.rentalFee,
+        depositAmount: data.depositAmount,
+        paymentMethod: data.paymentMethod || "online",
+        status: initialStatus,
+        paymentStatus: "pending",
+      } as any,
+      include: {
+        product: true,
+        renter: { select: { name: true, email: true } }
+      }
     });
   }
 
@@ -84,10 +104,27 @@ export class RentalService {
     });
   }
 
-  async updateRentalStatus(id: string, status: string) {
+  async getProductRentals(productId: string) {
+    return prisma.rental.findMany({
+      where: {
+        productId,
+        status: { notIn: ["cancelled"] }
+      },
+      select: {
+        startDate: true,
+        endDate: true
+      }
+    });
+  }
+
+  async updateRentalStatus(id: string, status: string, paymentStatus?: string, transactionId?: string) {
     return prisma.rental.update({
       where: { id },
-      data: { status },
+      data: { 
+        status,
+        paymentStatus: paymentStatus || undefined,
+        transactionId: transactionId || undefined,
+      } as any,
       include: {
         product: true,
         renter: true,

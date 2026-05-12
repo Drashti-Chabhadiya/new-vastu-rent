@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useProduct, useProducts, useWishlist, useCreateRental } from '#/hook'
+import { useProduct, useProducts, useWishlist, useCreateRental, useProductRentals } from '#/hook'
 import { useProductReviews, useCreateReview } from '#/hook/reviews'
 import { ProductCard } from '#/components/common/ProductCard'
 import { Skeleton } from '#/components/ui/skeleton'
@@ -20,10 +20,12 @@ import {
   ArrowRight,
   Check,
   Send,
-  Loader2
+  Loader2,
+  IndianRupee
 } from 'lucide-react'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { cn } from '#/lib/utils'
+import { apiClient } from '#/lib/api'
 
 export const Route = createFileRoute('/products/$id')({
   component: ProductDetailPage
@@ -36,6 +38,7 @@ function ProductDetailPage() {
   const { data: similarProducts } = useProducts({ categoryId: product?.categoryId })
   const { toggleLike, isLiked } = useWishlist()
   const { data: reviews = [] } = useProductReviews(id)
+  const { data: productRentals = [] } = useProductRentals(id)
   const createRental = useCreateRental()
   const createReview = useCreateReview(id)
   
@@ -59,6 +62,19 @@ function ProductDetailPage() {
   
   // Booking modal state
   const [showBookingConfirm, setShowBookingConfirm] = useState(false)
+  const [isPaying, setIsPaying] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'cash'>('online')
+
+  // Load Razorpay script
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href)
@@ -68,10 +84,42 @@ function ProductDetailPage() {
 
   const handleDayClick = (day: number) => {
     const clicked = new Date(calYear, calMonth, day)
+    
+    // Check if clicked date is booked
+    const isDateBooked = (date: Date) => productRentals.some((r: any) => {
+      const d = new Date(date); d.setHours(0,0,0,0)
+      const s = new Date(r.startDate); s.setHours(0,0,0,0)
+      const e = new Date(r.endDate); e.setHours(0,0,0,0)
+      return d >= s && d <= e
+    })
+
+    if (isDateBooked(clicked)) return
+
     if (!startDate || (startDate && endDate)) {
       setStartDate(clicked)
       setEndDate(null)
     } else {
+      // If selecting a range, check if any date in between is booked
+      let hasBookedInRange = false
+      const start = clicked < startDate ? clicked : startDate
+      const end = clicked < startDate ? startDate : clicked
+      
+      const temp = new Date(start)
+      while (temp <= end) {
+        if (isDateBooked(temp)) {
+          hasBookedInRange = true
+          break
+        }
+        temp.setDate(temp.getDate() + 1)
+      }
+
+      if (hasBookedInRange) {
+        alert("This range includes dates that are already booked.")
+        setStartDate(clicked)
+        setEndDate(null)
+        return
+      }
+
       if (clicked < startDate) {
         setEndDate(startDate)
         setStartDate(clicked)
@@ -96,17 +144,73 @@ function ProductDetailPage() {
   const handleRentNow = async () => {
     if (!startDate || !endDate) { alert('Please select start and end dates on the calendar.'); return }
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / 86400000) + 1
-    const total = days * (product?.price || 0)
+    const rentalFee = days * (product?.price || 0)
+    const depositAmount = product?.securityDeposit || 0
+    const total = rentalFee + depositAmount
+
     try {
-      await createRental.mutateAsync({
+      setIsPaying(true)
+      // 1. Create Rental Record
+      const rental = await createRental.mutateAsync({
         productId: id,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        totalPrice: total
+        rentalFee,
+        depositAmount,
+        totalPrice: total,
+        paymentMethod: paymentMethod
       })
-      setShowBookingConfirm(true)
-    } catch {
-      alert('Booking failed. Please make sure you are logged in.')
+
+      // If COD, we are done
+      if (paymentMethod === 'cash') {
+        setShowBookingConfirm(true)
+        setIsPaying(false)
+        return
+      }
+
+      // 2. Create Razorpay Order (Only for online)
+      const { data: { order } } = await apiClient.post('/payments/create-order', { rentalId: rental.id })
+
+      // 3. Open Razorpay Checkout
+      const options = {
+        key: 'rzp_test_placeholder', // Should be in env
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Vastu Rent',
+        description: `Rental for ${product.title}`,
+        order_id: order.id,
+        handler: async (response: any) => {
+          // 4. Verify Payment
+          try {
+            await apiClient.post('/payments/verify-payment', {
+              ...response,
+              rentalId: rental.id
+            })
+            setShowBookingConfirm(true)
+          } catch (err) {
+            alert('Payment verification failed. Please contact support.')
+          } finally {
+            setIsPaying(false)
+          }
+        },
+        prefill: {
+          name: '', // Can fill from session
+          email: '',
+        },
+        theme: {
+          color: '#166534',
+        },
+        modal: {
+          ondismiss: () => setIsPaying(false)
+        }
+      }
+
+      const rzp = new (window as any).Razorpay(options)
+      rzp.open()
+
+    } catch (err: any) {
+      setIsPaying(false)
+      alert(err.response?.data?.message || 'Booking failed. Please make sure you are logged in.')
     }
   }
 
@@ -463,14 +567,48 @@ function ProductDetailPage() {
                 </div>
 
                 {/* Action Buttons */}
+                {/* Payment Method Selection */}
+                <div className="space-y-3">
+                  <div className="text-[13px] font-bold text-gray-900 flex items-center gap-2">
+                    <IndianRupee size={14} className="text-brand" />
+                    Payment Method
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={() => setPaymentMethod('online')}
+                      className={cn(
+                        "p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1",
+                        paymentMethod === 'online' 
+                          ? "border-brand bg-brand/5 text-brand" 
+                          : "border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200"
+                      )}
+                    >
+                      <ShieldCheck size={18} />
+                      <span className="text-[11px] font-black uppercase tracking-wider">Online Pay</span>
+                    </button>
+                    <button
+                      onClick={() => setPaymentMethod('cash')}
+                      className={cn(
+                        "p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1",
+                        paymentMethod === 'cash' 
+                          ? "border-brand bg-brand/5 text-brand" 
+                          : "border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200"
+                      )}
+                    >
+                      <MessageCircle size={18} />
+                      <span className="text-[11px] font-black uppercase tracking-wider">Cash on Pickup</span>
+                    </button>
+                  </div>
+                </div>
+
                 <div className="flex gap-3 pt-2">
                     <Button
                       onClick={handleRentNow}
-                      disabled={createRental.isPending}
+                      disabled={createRental.isPending || isPaying}
                       className="flex-1 h-12 rounded-xl bg-brand hover:bg-brand-hover text-white font-bold shadow-md shadow-brand/20 active:scale-[0.98] transition-all group"
                     >
-                      {createRental.isPending ? <Loader2 size={16} className="animate-spin mr-2" /> : <ArrowRight size={16} className="mr-2 transition-transform group-hover:translate-x-1" />}
-                      Rent Now
+                      {createRental.isPending || isPaying ? <Loader2 size={16} className="animate-spin mr-2" /> : <ArrowRight size={16} className="mr-2 transition-transform group-hover:translate-x-1" />}
+                      {isPaying ? "Processing..." : "Rent Now"}
                     </Button>
                     <Button
                       variant="outline"
@@ -481,9 +619,27 @@ function ProductDetailPage() {
                     </Button>
                 </div>
                 {startDate && (
-                  <div className="p-3 rounded-xl bg-brand/5 border border-brand/10 text-xs text-gray-700">
-                    <span className="font-bold">Selected: </span>
-                    {startDate.toLocaleDateString('en-IN')} {endDate ? `→ ${endDate.toLocaleDateString('en-IN')} (${rentalDays} days · ₹${totalPrice.toLocaleString()})` : '→ Pick end date'}
+                  <div className="p-4 rounded-xl bg-brand/5 border border-brand/10 space-y-2">
+                    <div className="flex items-center justify-between text-xs text-gray-700">
+                      <span className="font-bold">Dates:</span>
+                      <span>{startDate.toLocaleDateString('en-IN')} {endDate ? `→ ${endDate.toLocaleDateString('en-IN')}` : '→ Pick end date'}</span>
+                    </div>
+                    {endDate && (
+                      <>
+                        <div className="flex items-center justify-between text-xs text-gray-700">
+                          <span className="font-bold">Rental Fee ({rentalDays} days):</span>
+                          <span>₹{totalPrice.toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-gray-700">
+                          <span className="font-bold">Security Deposit (Refundable):</span>
+                          <span>₹{(product.securityDeposit || 0).toLocaleString()}</span>
+                        </div>
+                        <div className="pt-2 border-t border-brand/10 flex items-center justify-between text-sm text-gray-900 font-black">
+                          <span>Total Payable:</span>
+                          <span className="text-brand">₹{(totalPrice + (product.securityDeposit || 0)).toLocaleString()}</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -544,17 +700,41 @@ function ProductDetailPage() {
                             const day=i+1
                             const date=new Date(calYear,calMonth,day)
                             const isPast=date<new Date(today.getFullYear(),today.getMonth(),today.getDate())
+                            
+                            // Check if this date is within any existing rental range
+                            const isBooked = productRentals.some((r: any) => {
+                              const start = new Date(r.startDate)
+                              const end = new Date(r.endDate)
+                              // Set time to midnight for accurate comparison
+                              const d = new Date(date)
+                              d.setHours(0,0,0,0)
+                              const s = new Date(start)
+                              s.setHours(0,0,0,0)
+                              const e = new Date(end)
+                              e.setHours(0,0,0,0)
+                              return d >= s && d <= e
+                            })
+
                             const isStart=startDate&&date.toDateString()===startDate.toDateString()
                             const isEnd=endDate&&date.toDateString()===endDate.toDateString()
                             const inRange=startDate&&endDate&&date>startDate&&date<endDate
+                            
+                            const isDisabled = isPast || isBooked
+
                             return(
-                                <button key={day} onClick={()=>!isPast&&handleDayClick(day)}
-                                    className={cn('h-7 flex items-center justify-center text-xs rounded-md transition-all',
-                                        isPast?'text-gray-300 cursor-not-allowed':
-                                        isStart||isEnd?'bg-brand text-white font-bold':
-                                        inRange?'bg-brand/10 text-brand':
+                                <button 
+                                    key={day} 
+                                    onClick={()=>!isDisabled&&handleDayClick(day)}
+                                    disabled={isDisabled}
+                                    className={cn('h-7 flex items-center justify-center text-xs rounded-md transition-all relative',
+                                        isDisabled ? 'text-gray-300 cursor-not-allowed bg-gray-50/50' :
+                                        isStart||isEnd ? 'bg-brand text-white font-bold' :
+                                        inRange ? 'bg-brand/10 text-brand' :
                                         'text-gray-700 hover:bg-gray-100 cursor-pointer'
-                                    )}>{day}</button>
+                                    )}>
+                                      {day}
+                                      {isBooked && <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-red-400" />}
+                                </button>
                             )
                         })}
                     </div>

@@ -25,7 +25,8 @@ import {
   MapPin, 
   User, 
   Image as ImageIcon,
-  Type
+  Type,
+  ShieldCheck
 } from 'lucide-react'
 
 interface Category {
@@ -165,6 +166,28 @@ export const ProductForm = ({ form, categories, users, currentUser }: ProductFor
               <FormControl>
                 <Input
                   placeholder="Mumbai, MH"
+                  {...field}
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-white text-[15px] text-gray-900 placeholder:text-gray-400 focus-visible:ring-1 focus-visible:ring-dash-brand/30 transition-all font-medium shadow-sm"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField<ListingSchema>
+          control={form.control}
+          name="securityDeposit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[13px] font-bold text-gray-900 ml-1 flex items-center gap-2">
+                <ShieldCheck size={14} className="text-dash-brand" />
+                Security Deposit (Refundable)
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="2000"
                   {...field}
                   className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-white text-[15px] text-gray-900 placeholder:text-gray-400 focus-visible:ring-1 focus-visible:ring-dash-brand/30 transition-all font-medium shadow-sm"
                 />

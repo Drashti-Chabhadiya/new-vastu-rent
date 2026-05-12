@@ -70,6 +70,7 @@ export class ProductService {
       data: {
         ...data,
         price: parseFloat(data.price),
+        securityDeposit: data.securityDeposit ? parseFloat(data.securityDeposit) : 0,
         images: data.images || [],
         isAvailable: true,
       },

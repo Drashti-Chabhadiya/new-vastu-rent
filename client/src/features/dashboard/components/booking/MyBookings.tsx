@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Badge } from '#/components/ui/badge';
+import { cn } from '#/lib/utils';
 
 export const MyBookings = () => {
   const { data: rentals, isLoading } = useMyRentals();
@@ -41,8 +42,14 @@ export const MyBookings = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'active':
-        return <Badge className="bg-blue-50 text-blue-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><Clock size={12} /> Active</Badge>;
+      case 'confirmed':
+        return <Badge className="bg-blue-50 text-blue-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><Clock size={12} /> Confirmed</Badge>;
+      case 'picked_up':
+        return <Badge className="bg-purple-50 text-purple-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><Clock size={12} /> Picked Up</Badge>;
+      case 'in_use':
+        return <Badge className="bg-indigo-50 text-indigo-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><Clock size={12} /> In Use</Badge>;
+      case 'returned':
+        return <Badge className="bg-orange-50 text-orange-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><Clock size={12} /> Returned</Badge>;
       case 'completed':
         return <Badge className="bg-green-50 text-green-600 border-none px-3 py-1 rounded-lg font-bold flex items-center gap-1.5"><CheckCircle2 size={12} /> Completed</Badge>;
       case 'cancelled':
@@ -121,12 +128,21 @@ export const MyBookings = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end min-w-[100px]">
+                <div className="flex flex-col items-end min-w-[120px]">
                   <span className="text-[10px] font-black text-dash-text-soft uppercase tracking-wider mb-1">Total Paid</span>
                   <div className="text-xl font-black text-dash-brand flex items-center">
                     <IndianRupee size={18} strokeWidth={3} />
                     {rental.totalPrice.toLocaleString()}
                   </div>
+                  <span className={cn(
+                    "text-[9px] font-black uppercase mt-1 px-2 py-0.5 rounded-md",
+                    rental.paymentStatus === 'paid' ? "text-green-600 bg-green-50" : "text-yellow-600 bg-yellow-50"
+                  )}>
+                    {rental.paymentStatus || 'Pending'}
+                  </span>
+                  <span className="text-[8px] font-bold text-dash-text-soft opacity-60 uppercase tracking-tighter mt-0.5">
+                    via {rental.paymentMethod === 'cash' ? 'Cash at Pickup' : 'Online'}
+                  </span>
                 </div>
 
                 <button className="h-12 w-12 rounded-2xl bg-gray-50 flex items-center justify-center text-dash-text-soft hover:bg-dash-brand hover:text-white transition-all duration-300">

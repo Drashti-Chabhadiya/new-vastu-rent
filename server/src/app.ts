@@ -14,6 +14,7 @@ import multipart from "@fastify/multipart";
 import { uploadRoutes } from "./routes/upload.routes";
 import { likeRoutes } from "./routes/like.routes";
 import { deleteRequestRoutes } from "./routes/delete-request.routes";
+import { paymentRoutes } from "./routes/payment.routes";
 
 export const app = Fastify({ logger: true });
 
@@ -48,6 +49,7 @@ app.register(statsRoutes, { prefix: "/api/admin/stats" });
 app.register(uploadRoutes, { prefix: "/api/upload" });
 app.register(likeRoutes, { prefix: "/api/likes" });
 app.register(deleteRequestRoutes, { prefix: "/api/delete-requests" });
+app.register(paymentRoutes, { prefix: "/api/payments" });
 
 // Aliases for backward compatibility with the frontend
 app.register(productRoutes, { prefix: "/api/admin/products" });
