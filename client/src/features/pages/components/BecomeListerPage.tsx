@@ -16,7 +16,7 @@ const features = [
     description: "Upload photos, set your price, and list your item in less than 2 minutes."
   },
   {
-    icon: <ShieldCheck className="w-8 h-8 text-brand" />,
+    icon: <ShieldCheck className="w-8 h-8 text-primary" />,
     title: "Verified Renters",
     description: "All renters are verified through our platform to ensure your items are in safe hands."
   },
@@ -41,17 +41,17 @@ export function BecomeListerPage() {
         </div>
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl">
-            <Badge className="mb-6 bg-brand hover:bg-brand-hover text-white px-4 py-1.5 rounded-full font-bold text-sm">
+            <Badge className="mb-6 bg-primary hover:bg-primary-hover text-white px-4 py-1.5 rounded-full font-bold text-sm">
               JOIN 5,000+ OWNERS
             </Badge>
             <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
-              Turn Your Things Into <span className="text-brand">Earnings</span>
+              Turn Your Things Into <span className="text-primary">Earnings</span>
             </h1>
             <p className="text-xl text-gray-300 mb-10 leading-relaxed">
               Don't let your items gather dust. List them on Vastu-Rent and start earning money today. It's safe, easy, and free to get started.
             </p>
             <Link to={"/signup" as any}>
-              <Button className="h-16 px-12 bg-brand hover:bg-brand-hover text-white font-bold rounded-2xl text-lg flex items-center gap-3">
+              <Button className="h-16 px-12 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl text-lg flex items-center gap-3">
                 Start Listing Now
                 <ArrowRight size={20} />
               </Button>
@@ -74,7 +74,7 @@ export function BecomeListerPage() {
             {features.map((feature, i) => (
               <Card key={i} className="bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 rounded-3xl p-6 group">
                 <CardHeader className="p-0 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-brand/5 flex items-center justify-center transition-transform group-hover:scale-110">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center transition-transform group-hover:scale-110">
                     {feature.icon}
                   </div>
                 </CardHeader>
@@ -91,7 +91,7 @@ export function BecomeListerPage() {
       {/* Testimonial Section */}
       <section className="py-24">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-brand/5 rounded-[40px] overflow-hidden flex flex-col lg:flex-row border border-brand/10">
+          <div className="bg-primary/5 rounded-[40px] overflow-hidden flex flex-col lg:flex-row border border-brand/10">
             <div className="lg:w-1/2 bg-gray-100">
               <img 
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" 
@@ -112,7 +112,7 @@ export function BecomeListerPage() {
                 "Listing my professional camera equipment on Vastu-Rent has been a game-changer. I've earned over ₹45,000 in just three months, and every renter has been respectful and professional."
               </h3>
               <div>
-                <p className="text-xl font-bold text-brand">Rahul Sharma</p>
+                <p className="text-xl font-bold bg-primary">Rahul Sharma</p>
                 <p className="text-gray-500">Professional Photographer, Ahmedabad</p>
               </div>
             </div>
@@ -125,7 +125,7 @@ export function BecomeListerPage() {
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-gray-900 mb-8">Your items could be earning for you right now.</h2>
           <Link to={"/signup" as any}>
-            <Button className="h-16 px-12 bg-brand hover:bg-brand-hover text-white font-bold rounded-2xl text-lg">
+            <Button className="h-16 px-12 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl text-lg">
               Get Started for Free
             </Button>
           </Link>

@@ -3,6 +3,9 @@ import { userController } from "../controllers/user.controller";
 import { auth } from "../config/auth";
 
 export async function userRoutes(fastify: FastifyInstance) {
+  // Public Profile Route
+  fastify.get("/profile/:id", userController.getPublicProfile);
+
   // Admin Routes (Prefixed with /api/admin/users in app.ts)
   fastify.addHook("preHandler", async (request, reply) => {
     const session = await auth.api.getSession({ headers: request.headers as any });

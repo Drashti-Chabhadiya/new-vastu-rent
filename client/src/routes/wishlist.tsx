@@ -27,7 +27,7 @@ function WishlistPage() {
           </div>
           
           <div className="flex items-center gap-2 text-gray-500">
-            <Heart className="w-4 h-4 fill-brand text-brand" />
+            <Heart className="w-4 h-4 fill-brand text-primary" />
             <span className="text-sm font-medium">{wishlist.length} {wishlist.length === 1 ? 'item' : 'items'} saved</span>
           </div>
         </div>
@@ -64,7 +64,7 @@ function WishlistPage() {
               Explore our wide range of items and save your favorites to view them later.
             </p>
             <Link to="/products">
-              <Button className="bg-brand hover:bg-brand-hover text-white px-8 h-12 rounded-xl font-bold flex items-center gap-2">
+              <Button className="bg-primary hover:bg-primary-hover text-white px-8 h-12 rounded-xl font-bold flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5" />
                 Start Shopping
               </Button>

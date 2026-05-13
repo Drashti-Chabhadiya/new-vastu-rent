@@ -42,7 +42,7 @@ export const DashboardOverview = ({
           isPositive={true}
           icon={Users}
           iconBg="bg-green-50"
-          iconColor="text-brand-light"
+          iconColor="bg-primary-light"
           sparklineData={[30, 40, 35, 50, 45, 60, 55]}
         />
         <StatCard 
@@ -52,7 +52,7 @@ export const DashboardOverview = ({
           isPositive={true}
           icon={Tag}
           iconBg="bg-emerald-50"
-          iconColor="text-brand-light-alt"
+          iconColor="bg-primary-light-alt"
           sparklineData={[40, 30, 45, 35, 55, 40, 50]}
         />
         <StatCard 
@@ -62,7 +62,7 @@ export const DashboardOverview = ({
           isPositive={true}
           icon={ShoppingBag}
           iconBg="bg-green-50"
-          iconColor="text-brand-light"
+          iconColor="bg-primary-light"
           sparklineData={[20, 35, 30, 45, 40, 50, 45]}
         />
         <StatCard 
@@ -72,7 +72,7 @@ export const DashboardOverview = ({
           isPositive={true}
           icon={IndianRupee}
           iconBg="bg-emerald-50"
-          iconColor="text-brand-light-alt"
+          iconColor="bg-primary-light-alt"
           sparklineData={[50, 60, 55, 70, 65, 80, 75]}
         />
       </div>

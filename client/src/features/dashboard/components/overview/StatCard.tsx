@@ -65,13 +65,13 @@ export const StatCard = ({
       <div className="flex items-end justify-between">
         <div className="flex items-center gap-1.5">
           {isPositive ? (
-            <TrendingUp size={16} className="text-brand-light" />
+            <TrendingUp size={16} className="bg-primary-light" />
           ) : (
             <TrendingDown size={16} className="text-dash-error" />
           )}
           <span className={cn(
             "text-sm font-bold",
-            isPositive ? "text-brand-light" : "text-dash-error"
+            isPositive ? "bg-primary-light" : "text-dash-error"
           )}>
             {change}
           </span>

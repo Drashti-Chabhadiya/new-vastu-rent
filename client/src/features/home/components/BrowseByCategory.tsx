@@ -16,7 +16,7 @@ export function BrowseByCategory() {
           <h2 className="text-2xl font-bold text-gray-900">Browse by Categories</h2>
           <Link 
             to={"/categories" as any} 
-            className="text-sm font-semibold text-brand-accent hover:text-brand flex items-center gap-1 group w-fit"
+            className="text-sm font-semibold bg-primary-accent hover:bg-primary flex items-center gap-1 group w-fit"
           >
             View all categories 
             <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

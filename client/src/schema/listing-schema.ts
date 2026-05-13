@@ -9,6 +9,15 @@ export const listingSchema = z.object({
   categoryId: z.string().min(1, "Please select a category"),
   ownerId: z.string().min(1, "Please assign an owner"),
   images: z.array(z.string()).min(1, "At least one image is required"),
+  
+  // New Enhanced Fields
+  condition: z.string().min(1, "Condition is required").optional(),
+  features: z.array(z.string()).default([]),
+  deliveryOptions: z.array(z.string()).min(1, "Select at least one delivery option").default(["Pickup"]),
+  pickupReturnDetails: z.string().optional(),
+  tags: z.array(z.string()).default([]),
+  minDuration: z.coerce.number().min(1).default(1),
+  maxDuration: z.coerce.number().positive().optional(),
 });
 
 export type ListingSchema = z.infer<typeof listingSchema>;

@@ -23,7 +23,7 @@ export const RevenueChart = () => {
           <p className="text-[10px] font-bold text-dash-text-muted uppercase">Total Revenue</p>
           <div className="flex items-center gap-2">
             <h4 className="text-2xl font-bold text-dash-text">₹ 45,78,230</h4>
-            <div className="flex items-center gap-1 text-brand-light">
+            <div className="flex items-center gap-1 bg-primary-light">
               <TrendingUp size={14} />
               <span className="text-xs font-bold">20.4%</span>
               <span className="text-[10px] text-dash-text-muted ml-1 font-normal">from last month</span>
@@ -46,7 +46,7 @@ export const RevenueChart = () => {
           {bars.map((bar, i) => (
             <div 
               key={i} 
-              className="flex-1 bg-dash-brand rounded-t-sm transition-all duration-500 hover:bg-brand-light" 
+              className="flex-1 bg-dash-brand rounded-t-sm transition-all duration-500 hover:bg-primary-light" 
               style={{ height: `${bar.h}%` }}
             ></div>
           ))}

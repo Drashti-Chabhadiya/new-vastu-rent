@@ -40,7 +40,8 @@ app.register(cors, {
 app.register(authRoutes, { prefix: "/api/auth" });
 
 // Entity Routes
-app.register(userRoutes, { prefix: "/api/admin/users" });
+app.register(userRoutes, { prefix: "/api/users" }); // Public profile access
+app.register(userRoutes, { prefix: "/api/admin/users" }); // Admin management
 app.register(productRoutes, { prefix: "/api/products" });
 app.register(categoryRoutes, { prefix: "/api/categories" });
 app.register(reviewRoutes, { prefix: "/api/reviews" });

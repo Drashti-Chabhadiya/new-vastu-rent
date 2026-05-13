@@ -42,6 +42,13 @@ export class UserController {
     await userService.deleteUser(id);
     return { success: true };
   }
+
+  async getPublicProfile(request: FastifyRequest, reply: FastifyReply) {
+    const { id } = request.params as any;
+    const profile = await userService.getPublicProfile(id);
+    if (!profile) return reply.status(404).send({ message: "Profile not found" });
+    return profile;
+  }
 }
 
 export const userController = new UserController();

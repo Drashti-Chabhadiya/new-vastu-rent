@@ -36,7 +36,6 @@ export function ProductDetail({ id }: { id: string }) {
   const { data: productRentals = [] } = useProductRentals(id)
   const createRental = useCreateRental()
   const createReview = useCreateReview(id)
-  
   const [selectedImage, setSelectedImage] = useState(0)
   const [activeTab, setActiveTab] = useState('description')
   
@@ -252,10 +251,10 @@ export function ProductDetail({ id }: { id: string }) {
   const liked = isLiked(product.id)
 
   const productInfo = [
-    { label: 'Category', value: product.category?.name || 'Furniture' },
-    { label: 'Condition', value: 'Like New' },
-    { label: 'Brand', value: 'IKEA' },
-    { label: 'Color', value: 'Green' },
+    { label: 'Category', value: product.category?.name || 'Uncategorized' },
+    { label: 'Condition', value: product.condition || 'Good' },
+    { label: 'Min. Rental', value: `${product.minDuration || 1} day(s)` },
+    { label: 'Max. Rental', value: product.maxDuration ? `${product.maxDuration} days` : 'Unlimited' },
     { label: 'Location', value: product.location || 'Ahmedabad, Gujarat' },
     { label: 'Listed On', value: new Date(product.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }) },
   ]
@@ -278,9 +277,9 @@ export function ProductDetail({ id }: { id: string }) {
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-xs font-bold text-gray-400 mb-6 uppercase tracking-wider">
-          <Link to="/" className="hover:text-brand transition-colors">Home</Link>
+          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <ChevronRight size={12} className="opacity-50" />
-          <Link to="/products" className="hover:text-brand transition-colors">Marketplace</Link>
+          <Link to="/products" className="hover:text-primary transition-colors">Marketplace</Link>
           <ChevronRight size={12} className="opacity-50" />
           <span className="text-gray-900 truncate">{product.title || product.name}</span>
         </nav>
@@ -323,7 +322,7 @@ export function ProductDetail({ id }: { id: string }) {
                   </button>
                   <button
                     onClick={handleShare}
-                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm text-gray-600 hover:text-brand shadow-lg flex items-center justify-center transition-all active:scale-90"
+                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm text-gray-600 hover:text-primary shadow-lg flex items-center justify-center transition-all active:scale-90"
                     title="Copy link"
                   >
                     {copied ? <Check size={16} className="text-green-500" /> : <Share2 size={16} />}
@@ -360,12 +359,12 @@ export function ProductDetail({ id }: { id: string }) {
                             onClick={() => setActiveTab(tab.id)}
                             className={cn(
                                 "py-4 text-sm font-bold transition-all relative whitespace-nowrap",
-                                activeTab === tab.id ? "text-brand" : "text-gray-500 hover:text-gray-900"
+                                activeTab === tab.id ? "text-primary" : "text-gray-500 hover:text-gray-900"
                             )}
                         >
                             {tab.label}
                             {activeTab === tab.id && (
-                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand" />
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                             )}
                         </button>
                     ))}
@@ -374,34 +373,76 @@ export function ProductDetail({ id }: { id: string }) {
                 <div className="p-6 bg-white min-h-[250px]">
                     {activeTab === 'description' && (
                         <div className="space-y-6">
-                            <p className="text-sm text-gray-600 leading-relaxed">
-                                {product.description || "Upgrade your living space with this elegant piece. It comes with premium materials for maximum comfort. Ideal for homes, offices, and studios."}
+                            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+                                {product.description || "No description provided."}
                             </p>
-                            <ul className="space-y-3">
-                                {[
-                                    "Premium quality fabric",
-                                    "Sturdy wooden frame",
-                                    "Comfortable and spacious seating",
-                                    "Well maintained and clean"
-                                ].map((item, i) => (
-                                    <li key={i} className="flex items-center gap-2.5 text-sm text-gray-700 font-medium">
-                                        <CheckCircle2 size={16} className="text-brand shrink-0" />
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
+                            {product.features && product.features.length > 0 && (
+                              <div className="space-y-3">
+                                <h4 className="font-bold text-gray-900 text-sm uppercase tracking-wider">Features & Specs</h4>
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    {product.features.map((item: string, i: number) => (
+                                        <li key={i} className="flex items-center gap-2.5 text-sm text-gray-700 font-medium">
+                                            <CheckCircle2 size={16} className="text-primary shrink-0" />
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                              </div>
+                            )}
                         </div>
                     )}
                     {activeTab === 'details' && (
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <h4 className="font-bold text-gray-900 text-sm">Dimensions</h4>
-                                <p className="text-sm text-gray-500">Width: 210cm, Height: 85cm, Depth: 95cm</p>
+                        <div className="space-y-8">
+                            <div className="grid grid-cols-2 gap-8">
+                                <div className="space-y-3">
+                                    <h4 className="font-bold text-gray-900 text-sm uppercase tracking-wider flex items-center gap-2">
+                                      <Calendar size={16} className="text-primary" /> Rental Terms
+                                    </h4>
+                                    <div className="space-y-2">
+                                      <p className="text-sm text-gray-500 flex justify-between">
+                                        <span>Min duration:</span>
+                                        <span className="font-bold text-gray-700">{product.minDuration || 1} day(s)</span>
+                                      </p>
+                                      <p className="text-sm text-gray-500 flex justify-between">
+                                        <span>Max duration:</span>
+                                        <span className="font-bold text-gray-700">{product.maxDuration ? `${product.maxDuration} days` : 'Flexible'}</span>
+                                      </p>
+                                      <p className="text-sm text-gray-500 flex justify-between">
+                                        <span>Security Deposit:</span>
+                                        <span className="font-bold text-brand">₹{(product.securityDeposit || 0).toLocaleString()}</span>
+                                      </p>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <h4 className="font-bold text-gray-900 text-sm uppercase tracking-wider flex items-center gap-2">
+                                      <ShieldCheck size={16} className="text-primary" /> Delivery & Pickup
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                      {product.deliveryOptions?.map((opt: string) => (
+                                        <Badge key={opt} variant="secondary" className="bg-gray-100 text-gray-700 rounded-md">
+                                          {opt}
+                                        </Badge>
+                                      )) || <span className="text-sm text-gray-500 italic">Self-pickup only</span>}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="space-y-2">
-                                <h4 className="font-bold text-gray-900 text-sm">Material</h4>
-                                <p className="text-sm text-gray-500">Solid wood, Polyester fabric, Pocket springs</p>
-                            </div>
+                            
+                            {product.pickupReturnDetails && (
+                              <div className="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-2">
+                                <h4 className="font-bold text-gray-900 text-xs uppercase tracking-widest">Handover Instructions</h4>
+                                <p className="text-sm text-gray-600 italic">"{product.pickupReturnDetails}"</p>
+                              </div>
+                            )}
+
+                            {product.tags && product.tags.length > 0 && (
+                              <div className="flex flex-wrap gap-2 pt-2">
+                                {product.tags.map((tag: string) => (
+                                  <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-gray-400 bg-gray-50 px-2 py-1 rounded">
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
                         </div>
                     )}
                     {activeTab === 'reviews' && (
@@ -416,7 +457,7 @@ export function ProductDetail({ id }: { id: string }) {
                             <div className="space-y-4">
                               {reviews.map((r: any) => (
                                 <div key={r.id} className="flex gap-3 pb-4 border-b border-gray-50 last:border-0">
-                                  <div className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center font-bold text-sm shrink-0">
+                                  <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shrink-0">
                                     {r.user?.name?.[0] || 'U'}
                                   </div>
                                   <div className="flex-1">
@@ -451,7 +492,7 @@ export function ProductDetail({ id }: { id: string }) {
                             <Button
                               onClick={handleSubmitReview}
                               disabled={createReview.isPending}
-                              className="w-full h-10 rounded-xl bg-brand hover:bg-brand-hover text-white font-bold gap-2"
+                              className="w-full h-10 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold gap-2"
                             >
                               {createReview.isPending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                               Submit Review
@@ -497,16 +538,21 @@ export function ProductDetail({ id }: { id: string }) {
                             <span className="font-bold text-gray-900 text-sm">{product.rating || "4.6"}</span>
                             <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                         </div>
-                        <span className="text-gray-500 text-sm font-medium cursor-pointer">({product.reviewsCount || "18"} Reviews)</span>
+                        <span className="text-gray-500 text-sm font-medium cursor-pointer">({product.reviewsCount || "0"} Reviews)</span>
                     </div>
                     
                     <div className="flex items-baseline gap-1.5 pt-1">
-                        <span className="text-3xl font-black text-brand">₹{product.price.toLocaleString()}</span>
+                        <span className="text-3xl font-black text-primary">₹{product.price.toLocaleString()}</span>
                         <span className="text-sm font-bold text-gray-500">/day</span>
+                        {product.securityDeposit > 0 && (
+                          <span className="ml-3 text-xs font-medium text-gray-400">
+                            + ₹{product.securityDeposit.toLocaleString()} deposit
+                          </span>
+                        )}
                     </div>
                     
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                        A stylish and comfortable {product.title || product.name} perfect for your living room. Well maintained and in excellent condition.
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                        {product.description}
                     </p>
                 </div>
 
@@ -515,17 +561,13 @@ export function ProductDetail({ id }: { id: string }) {
                 {/* Product Information Table */}
                 <div className="space-y-4">
                     <h3 className="text-sm font-bold text-gray-900">Product Information</h3>
-                    <div className="grid grid-cols-3 gap-y-3 gap-x-4">
+                    <div className="grid grid-cols-1 gap-y-3">
                         {productInfo.map((info) => (
-                            <div key={info.label} className="col-span-3 grid grid-cols-3">
+                            <div key={info.label} className="grid grid-cols-3">
                                 <span className="col-span-1 text-sm text-gray-500">{info.label}</span>
                                 <span className="col-span-2 text-sm font-medium text-gray-900">{info.value}</span>
                             </div>
                         ))}
-                        <div className="col-span-3 grid grid-cols-3">
-                            <span className="col-span-1 text-sm text-gray-500">Seating Capacity</span>
-                            <span className="col-span-2 text-sm font-medium text-gray-900">3 Seater</span>
-                        </div>
                     </div>
                 </div>
 
@@ -539,7 +581,7 @@ export function ProductDetail({ id }: { id: string }) {
                         { icon: <ShieldCheck size={16} />, title: "Secure Payment", desc: "100% Safe" }
                     ].map((feature, i) => (
                         <div key={i} className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-brand shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-primary shrink-0">
                                 {feature.icon}
                             </div>
                             <div>
@@ -552,7 +594,7 @@ export function ProductDetail({ id }: { id: string }) {
 
                 {/* Save More Banner */}
                 <div className="p-4 rounded-xl bg-green-50 border border-green-100 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand shrink-0 shadow-sm">
+                    <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary shrink-0 shadow-sm">
                         <AlertCircle size={16} />
                     </div>
                     <div>
@@ -565,7 +607,7 @@ export function ProductDetail({ id }: { id: string }) {
                 {/* Payment Method Selection */}
                 <div className="space-y-3">
                   <div className="text-[13px] font-bold text-gray-900 flex items-center gap-2">
-                    <IndianRupee size={14} className="text-brand" />
+                    <IndianRupee size={14} className="text-primary" />
                     Payment Method
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -574,7 +616,7 @@ export function ProductDetail({ id }: { id: string }) {
                       className={cn(
                         "p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1",
                         paymentMethod === 'online' 
-                          ? "border-brand bg-brand/5 text-brand" 
+                          ? "border-brand bg-primary/5 text-primary" 
                           : "border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200"
                       )}
                     >
@@ -586,7 +628,7 @@ export function ProductDetail({ id }: { id: string }) {
                       className={cn(
                         "p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-1",
                         paymentMethod === 'cash' 
-                          ? "border-brand bg-brand/5 text-brand" 
+                          ? "border-brand bg-primary/5 text-primary" 
                           : "border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200"
                       )}
                     >
@@ -600,7 +642,7 @@ export function ProductDetail({ id }: { id: string }) {
                     <Button
                       onClick={handleRentNow}
                       disabled={createRental.isPending || isPaying}
-                      className="flex-1 h-12 rounded-xl bg-brand hover:bg-brand-hover text-white font-bold shadow-md shadow-brand/20 active:scale-[0.98] transition-all group"
+                      className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold shadow-md shadow-brand/20 active:scale-[0.98] transition-all group"
                     >
                       {createRental.isPending || isPaying ? <Loader2 size={16} className="animate-spin mr-2" /> : <ArrowRight size={16} className="mr-2 transition-transform group-hover:translate-x-1" />}
                       {isPaying ? "Processing..." : "Rent Now"}
@@ -614,7 +656,7 @@ export function ProductDetail({ id }: { id: string }) {
                     </Button>
                 </div>
                 {startDate && (
-                  <div className="p-4 rounded-xl bg-brand/5 border border-brand/10 space-y-2">
+                  <div className="p-4 rounded-xl bg-primary/5 border border-brand/10 space-y-2">
                     <div className="flex items-center justify-between text-xs text-gray-700">
                       <span className="font-bold">Dates:</span>
                       <span>{startDate.toLocaleDateString('en-IN')} {endDate ? `→ ${endDate.toLocaleDateString('en-IN')}` : '→ Pick end date'}</span>
@@ -631,7 +673,7 @@ export function ProductDetail({ id }: { id: string }) {
                         </div>
                         <div className="pt-2 border-t border-brand/10 flex items-center justify-between text-sm text-gray-900 font-black">
                           <span>Total Payable:</span>
-                          <span className="text-brand">₹{(totalPrice + (product.securityDeposit || 0)).toLocaleString()}</span>
+                          <span className="text-primary">₹{(totalPrice + (product.securityDeposit || 0)).toLocaleString()}</span>
                         </div>
                       </>
                     )}
@@ -650,17 +692,17 @@ export function ProductDetail({ id }: { id: string }) {
                             {product.owner?.image ? (
                                 <img src={product.owner.image} alt={product.owner.name} className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-brand text-white font-bold text-lg">
+                                <div className="w-full h-full flex items-center justify-center bg-primary text-white font-bold text-lg">
                                     {product.owner?.name?.[0] || "U"}
                                 </div>
                             )}
                         </div>
                         <div>
-                            <p className="font-bold text-gray-900 text-sm">{product.owner?.name || "Rohan Mehta"}</p>
+                            <p className="font-bold text-gray-900 text-sm">{product.owner?.name || "Verified Owner"}</p>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                                <Star size={12} className="text-brand fill-brand" />
-                                <span className="text-xs font-bold text-gray-900">4.8</span>
-                                <span className="text-xs text-gray-500">(32 Listings)</span>
+                                <Star size={12} className="text-primary fill-brand" />
+                                <span className="text-xs font-bold text-gray-900">{product.owner?.rating || "0.0"}</span>
+                                <span className="text-xs text-gray-500">({product.owner?.listingsCount || 0} Listings)</span>
                                 <Badge className="bg-green-50 text-green-700 border-none px-1 py-0 rounded flex items-center gap-0.5 font-bold text-[8px] uppercase ml-1">
                                     <CheckCircle2 size={8} /> Verified
                                 </Badge>
@@ -669,15 +711,18 @@ export function ProductDetail({ id }: { id: string }) {
                     </div>
                     <div className="space-y-2.5">
                         <div className="flex items-center gap-2 text-gray-500 text-xs">
-                            <Calendar size={14} className="shrink-0" /> Member since May 2022
+                            <Calendar size={14} className="shrink-0" /> 
+                            Member since {product.owner?.createdAt ? new Date(product.owner.createdAt).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : 'May 2022'}
                         </div>
                         <div className="flex items-center gap-2 text-gray-500 text-xs">
                             <MessageCircle size={14} className="shrink-0" /> Usually responds in a few hours
                         </div>
                     </div>
-                    <Button variant="outline" className="w-full h-10 rounded-xl border-gray-200 font-bold text-brand hover:bg-brand/5 hover:border-brand transition-colors">
-                        View Profile
-                    </Button>
+                    <Link to={`/users/${product.owner?.id}` as any}>
+                        <Button variant="outline" className="w-full h-10 rounded-xl border-gray-200 font-bold text-primary hover:bg-primary/5 hover:border-brand transition-colors">
+                            View Profile
+                        </Button>
+                    </Link>
                 </div>
 
                 {/* Real Interactive Calendar */}
@@ -723,8 +768,8 @@ export function ProductDetail({ id }: { id: string }) {
                                     disabled={isDisabled}
                                     className={cn('h-7 flex items-center justify-center text-xs rounded-md transition-all relative',
                                         isDisabled ? 'text-gray-300 cursor-not-allowed bg-gray-50/50' :
-                                        isStart||isEnd ? 'bg-brand text-white font-bold' :
-                                        inRange ? 'bg-brand/10 text-brand' :
+                                        isStart||isEnd ? 'bg-primary text-white font-bold' :
+                                        inRange ? 'bg-primary/10 text-primary' :
                                         'text-gray-700 hover:bg-gray-100 cursor-pointer'
                                     )}>
                                       {day}
@@ -734,8 +779,8 @@ export function ProductDetail({ id }: { id: string }) {
                         })}
                     </div>
                     <div className="flex items-center justify-between text-[10px] text-gray-500 pt-1">
-                        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-brand"/>Selected</div>
-                        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-brand/10"/>Range</div>
+                        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-primary"/>Selected</div>
+                        <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-primary/10"/>Range</div>
                         <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-gray-100"/>Unavailable</div>
                     </div>
                 </div>
@@ -748,7 +793,7 @@ export function ProductDetail({ id }: { id: string }) {
                 <div className="mt-10">
                     <div className="flex items-center justify-between mb-5">
                         <h3 className="text-lg font-bold text-gray-900">Similar Items</h3>
-                        <Link to="/products" className="text-sm font-bold text-brand hover:underline">
+                        <Link to="/products" className="text-sm font-bold text-primary hover:underline">
                             View all
                         </Link>
                     </div>
@@ -775,12 +820,12 @@ export function ProductDetail({ id }: { id: string }) {
               <p className="text-sm text-gray-500 mt-2">
                 {product.title || product.name} booked from {startDate?.toLocaleDateString('en-IN')} to {endDate?.toLocaleDateString('en-IN')}.
               </p>
-              <p className="text-lg font-black text-brand mt-3">₹{totalPrice.toLocaleString()} total</p>
+              <p className="text-lg font-black text-primary mt-3">₹{totalPrice.toLocaleString()} total</p>
             </div>
             <div className="flex gap-3">
               <Button variant="outline" className="flex-1 rounded-xl font-bold" onClick={() => setShowBookingConfirm(false)}>Close</Button>
               <Link to="/profile/bookings" className="flex-1">
-                <Button className="w-full rounded-xl bg-brand text-white font-bold">My Bookings</Button>
+                <Button className="w-full rounded-xl bg-primary text-white font-bold">My Bookings</Button>
               </Link>
             </div>
           </div>

@@ -60,13 +60,13 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
         
-        <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 min-h-[3rem] group-hover:text-brand transition-colors">
+        <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
           {product.title || product.name}
         </h3>
         
         <div className="flex items-end justify-between mb-3 mt-auto">
           <div className="flex items-baseline gap-1">
-            <span className="text-lg font-bold text-brand-light">₹{product.price.toLocaleString()}</span>
+            <span className="text-lg font-bold text-primary-light">₹{product.price.toLocaleString()}</span>
             <span className="text-xs font-medium text-gray-500">/day</span>
           </div>
           <div className="flex items-center gap-1">
@@ -81,7 +81,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="text-xs font-medium truncate">{product.location || "Ahmedabad"}</span>
         </div>
 
-        <Button className="w-full bg-brand group-hover:bg-brand-hover text-white font-semibold rounded-xl h-11 shrink-0 transition-colors">
+        <Button className="w-full bg-primary group-hover:bg-primary-hover text-white font-semibold rounded-xl h-11 shrink-0 transition-colors">
           Rent Now
         </Button>
       </div>

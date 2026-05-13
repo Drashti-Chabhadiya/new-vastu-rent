@@ -1,185 +1,192 @@
-import {
-  MapPin,
-  Search,
-  LayoutGrid,
-  Heart,
-  User,
-} from "lucide-react"
+import { motion, type Variants } from 'motion/react'
+import { ShieldCheck, Leaf, CreditCard, ArrowRight, Star } from 'lucide-react'
+import heroImg from '../../../../public/assets/hero-living.jpg'
+import featureNook from '../../../../public/assets/feature-nook.jpg'
 
-import { Button } from "#/components/ui/button"
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
-const popularSearches = [
-  "DSLR Camera",
-  "Sofa",
-  "Wedding Dress",
-  "Laptop",
-  "Scooter",
-  "Party Items",
-]
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+}
 
-const floatingItems = [
-  {
-    title: "Camera",
-    price: "₹1,200",
-    image:
-      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80",
-    className: "top-[5%] left-[5%]",
-  },
-  {
-    title: "Sofa",
-    price: "₹800",
-    image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&q=80",
-    className: "top-[0%] right-[12%]",
-  },
-  {
-    title: "Laptop",
-    price: "₹1,000",
-    image:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80",
-    className: "top-[18%] right-[-5%]",
-  },
-  {
-    title: "Wedding Dress",
-    price: "₹2,000",
-    image:
-      "https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=500&q=80",
-    className: "bottom-[5%] right-[0%]",
-  },
-  {
-    title: "Scooter",
-    price: "₹500",
-    image:
-      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=500&q=80",
-    className: "bottom-[8%] left-[10%]",
-  },
-]
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+}
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-bg-light">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(47,106,74,0.08),transparent_30%)]" />
+    <section className="relative overflow-hidden">
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 pb-16 pt-12 md:px-10 md:pt-16 lg:grid-cols-12 lg:gap-14 lg:pb-24">
+        {/* Left column */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate="show"
+          className="lg:col-span-6 lg:pt-10"
+        >
+          <motion.div
+            variants={fadeUp}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+            Issue 04 · Spring Catalogue
+          </motion.div>
 
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-        {/* HERO */}
-        <div className="grid items-center gap-10 py-10 sm:py-12 lg:grid-cols-2 lg:py-16">
-          {/* LEFT */}
-          <div className="relative z-10 text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-[72px] font-black leading-[1.1] tracking-tight text-text-dark">
-              Rent Anything,
-              <br className="hidden sm:block" />
-              <span className="text-brand-light">
-                {' '}Live Smarter
+          <motion.h1
+            variants={fadeUp}
+            className="mt-7 font-display text-[clamp(2.75rem,6vw,5.25rem)] leading-[1.02] tracking-[-0.03em] text-foreground text-balance"
+          >
+            Rent anything.
+            <br />
+            <span className="italic text-primary">Live in harmony.</span>
+          </motion.h1>
+
+          <motion.p
+            variants={fadeUp}
+            className="mt-7 max-w-md text-[15.5px] leading-relaxed text-muted-foreground text-pretty"
+          >
+            A quietly curated marketplace for the things you need, only when you
+            need them. Quality lent between neighbors — gentler on your home,
+            kinder to the planet.
+          </motion.p>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-9 flex flex-wrap items-center gap-4"
+          >
+            <a
+              href="#categories"
+              className="group inline-flex items-center gap-3 rounded-full bg-primary py-3.5 pl-6 pr-3 text-[14px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift"
+            >
+              Explore the catalogue
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-primary-foreground/15 transition-transform duration-500 group-hover:translate-x-0.5">
+                <ArrowRight className="h-4 w-4" />
               </span>
-            </h1>
+            </a>
+            <a
+              href="#how-it-works"
+              className="text-[14px] text-foreground/80 underline decoration-border decoration-1 underline-offset-[6px] transition-colors hover:text-primary hover:decoration-primary"
+            >
+              How it works
+            </a>
+          </motion.div>
 
-            <p className="mt-4 sm:mt-7 mx-auto lg:mx-0 max-w-xl text-lg sm:text-xl leading-relaxed sm:leading-9 text-gray-600">
-              From homes to gadgets, clothes to cars and more —
-              rent anything you need, anytime, anywhere.
-            </p>
-
-            {/* SEARCH */}
-            <div className="w-full bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-2 my-8 border border-gray-100 text-left">
-              <div className="flex flex-col lg:flex-row items-center divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
-                {/* Location */}
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 w-full cursor-pointer hover:bg-gray-50 rounded-xl lg:rounded-none">
-                  <MapPin className="h-5 w-5 text-gray-400 shrink-0" />
-                  <div className="flex-1 truncate text-sm font-medium text-gray-800">
-                    Ahmedabad, Gujarat
-                  </div>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4 text-gray-400 shrink-0">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
+          <motion.div
+            variants={fadeUp}
+            className="mt-14 grid grid-cols-3 gap-6 border-t border-border pt-8"
+          >
+            {[
+              { k: '5,000+', v: 'Active members' },
+              { k: '10,000+', v: 'Items in rotation' },
+              { k: '25k kg', v: 'CO₂ saved' },
+            ].map((s) => (
+              <div key={s.v}>
+                <div className="font-display text-2xl text-foreground md:text-3xl">
+                  {s.k}
                 </div>
-
-                {/* Categories */}
-                <div className="flex-1 flex items-center gap-3 px-4 py-3 w-full cursor-pointer hover:bg-gray-50 rounded-xl lg:rounded-none">
-                  <LayoutGrid className="h-5 w-5 text-gray-400 shrink-0" />
-                  <div className="flex-1 truncate text-sm font-medium text-gray-800">
-                    All Categories
-                  </div>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4 text-gray-400 shrink-0">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </div>
-
-                {/* Search Input */}
-                <div className="flex-[2] flex flex-col sm:flex-row items-center gap-3 px-4 py-3 lg:py-2 w-full">
-                  <div className="flex items-center gap-3 w-full">
-                    <Search className="h-5 w-5 text-gray-400 shrink-0" />
-                    <input 
-                      type="text" 
-                      placeholder="What are you looking for?" 
-                      className="w-full border-0 bg-transparent text-sm font-medium text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-                    />
-                  </div>
-                  <Button className="h-11 w-full sm:w-auto px-8 rounded-xl bg-brand hover:bg-brand-hover text-white font-semibold flex items-center justify-center gap-2 shadow-md transition-transform hover:-translate-y-0.5 shrink-0">
-                    <Search className="h-4 w-4" />
-                    Search
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Popular */}
-            <div className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-3">
-              <span className="text-sm font-bold text-gray-800">
-                Popular Searches:
-              </span>
-
-              {popularSearches.map((item) => (
-                <button
-                  key={item}
-                  className="rounded-full border border-gray-200 bg-white px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-medium text-gray-600 transition hover:border-brand-light hover:text-brand-light"
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="relative hidden h-[680px] lg:block">
-            {/* Main Image */}
-            <div className="absolute inset-0 overflow-hidden rounded-[40px] bg-gradient-to-br from-brand-soft-light to-bg-alt">
-              <img
-                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1200&q=80"
-                alt=""
-                className="absolute bottom-0 right-0 h-full object-cover"
-              />
-            </div>
-
-            {/* Floating Cards */}
-            {floatingItems.map((item, index) => (
-              <div
-                key={index}
-                className={`absolute ${item.className} w-[180px] rounded-[28px] border border-white/60 bg-white/95 p-4 shadow-[0_15px_50px_rgba(0,0,0,0.08)] backdrop-blur-xl transition duration-300 hover:-translate-y-2`}
-              >
-                <div className="overflow-hidden rounded-2xl bg-gray-50">
-                  <img
-                    src={item.image}
-                    alt=""
-                    className="h-[120px] w-full object-cover"
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <h4 className="text-sm font-bold text-gray-900">
-                    {item.title}
-                  </h4>
-
-                  <p className="mt-1 text-lg font-black text-brand-light">
-                    {item.price}
-                    <span className="text-xs font-medium text-gray-400">
-                      {" "}
-                      /day
-                    </span>
-                  </p>
+                <div className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                  {s.v}
                 </div>
               </div>
             ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Right column — editorial image stack */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: EASE }}
+          className="relative lg:col-span-6"
+        >
+          <div className="relative overflow-hidden rounded-[2.25rem] bg-surface shadow-lift">
+            <img
+              src={heroImg}
+              alt="Sage green pendant lamp over a cream linen armchair in an arched alcove"
+              width={1080}
+              height={1350}
+              className="aspect-[4/5] h-full w-full object-cover"
+            />
+            {/* floating tag */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+              className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-background/90 px-3.5 py-2 text-[11px] uppercase tracking-[0.18em] text-foreground backdrop-blur-md"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+              Featured · The Linen Armchair
+            </motion.div>
+
+            {/* product card overlay */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.7 }}
+              className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-3 rounded-2xl bg-background/95 p-4 backdrop-blur-md md:bottom-7 md:left-7 md:right-7 md:p-5"
+            >
+              <div>
+                <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                  Living · Stockholm
+                </div>
+                <div className="mt-1 font-display text-lg text-foreground">
+                  Mira Lounge Chair
+                </div>
+                <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+                  <Star className="h-3 w-3 fill-primary text-primary" /> 4.96 ·
+                  Hosted by Anneli
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="font-display text-xl text-foreground">
+                  €18<span className="text-sm text-muted-foreground">/wk</span>
+                </div>
+                <button className="mt-1.5 text-[11px] uppercase tracking-[0.18em] text-primary hover:underline">
+                  Reserve
+                </button>
+              </div>
+            </motion.div>
           </div>
+
+          {/* small side image */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="absolute -bottom-10 -left-6 hidden w-44 overflow-hidden rounded-2xl border border-border bg-background shadow-soft md:block lg:-left-20 lg:w-52"
+          >
+            <img
+              src={featureNook}
+              alt="A sage green velvet armchair beside an arched window"
+              width={208}
+              height={260}
+              loading="lazy"
+              className="aspect-[4/5] w-full object-cover"
+            />
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* trust strip */}
+      <div className="border-y border-border bg-surface/60">
+        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-x-10 gap-y-4 px-6 py-5 text-[12px] uppercase tracking-[0.2em] text-muted-foreground md:px-10">
+          <span className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-primary" /> Verified hosts
+          </span>
+          <span className="flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-primary" /> Secure payments
+          </span>
+          <span className="flex items-center gap-2">
+            <Leaf className="h-4 w-4 text-primary" /> Circular by design
+          </span>
+          <span className="hidden items-center gap-2 md:flex">
+            <Star className="h-4 w-4 text-primary" /> 4.9 average rating
+          </span>
+          <span className="hidden items-center gap-2 lg:flex">
+            Featured in Kinfolk · Cereal · Apartamento
+          </span>
         </div>
       </div>
     </section>

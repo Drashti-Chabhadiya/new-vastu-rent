@@ -1,16 +1,21 @@
-import { BrowseByCategory, FeaturesBar, HeroSection, HowItWorks, OwnerCTA, PopularItems, StatsSection } from "#/features/home"
+import {
+  Categories,
+  Editorial,
+  HeroSection,
+  HowItWorks,
+  Journal,
+  OwnerCTA,
+} from '#/features/home'
 
 export function HomePage() {
   return (
-    <main className="bg-white">
+    <main className="bg-background">
       <HeroSection />
-      <StatsSection />
-      <BrowseByCategory />
-      <PopularItems />
+      <Categories />
+      <Editorial />
       <HowItWorks />
+      <Journal />
       <OwnerCTA />
-      <FeaturesBar />
     </main>
   )
 }
-

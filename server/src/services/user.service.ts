@@ -77,6 +77,49 @@ export class UserService {
   async getUserById(id: string) {
     return prisma.user.findUnique({ where: { id } });
   }
+
+  async getPublicProfile(id: string) {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        products: {
+          where: { isAvailable: true },
+          include: {
+            category: true,
+            reviews: true,
+          }
+        },
+        _count: {
+          select: { products: true }
+        }
+      }
+    });
+
+    if (!user) return null;
+
+    // Calculate average rating across all products
+    let totalRating = 0;
+    let reviewCount = 0;
+    user.products.forEach(p => {
+      p.reviews.forEach(r => {
+        totalRating += r.rating;
+        reviewCount++;
+      });
+    });
+
+    const averageRating = reviewCount > 0 ? (totalRating / reviewCount).toFixed(1) : "5.0";
+
+    return {
+      id: user.id,
+      name: user.name,
+      image: user.image,
+      createdAt: user.createdAt,
+      listings: user.products,
+      listingsCount: user._count.products,
+      averageRating,
+      reviewCount
+    };
+  }
 }
 
 export const userService = new UserService();

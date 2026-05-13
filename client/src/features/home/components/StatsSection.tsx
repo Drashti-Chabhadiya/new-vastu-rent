@@ -2,22 +2,22 @@ import { Home, Users, ShieldCheck, Star } from "lucide-react"
 
 const stats = [
   {
-    icon: <Home className="h-5 w-5 sm:h-6 sm:w-6 text-brand-accent" strokeWidth={1.5} />,
+    icon: <Home className="h-5 w-5 sm:h-6 sm:w-6 text-primary-accent" strokeWidth={1.5} />,
     value: "25,000+",
     label: "Items Available",
   },
   {
-    icon: <Users className="h-5 w-5 sm:h-6 sm:w-6 text-brand-accent" strokeWidth={1.5} />,
+    icon: <Users className="h-5 w-5 sm:h-6 sm:w-6 text-primary-accent" strokeWidth={1.5} />,
     value: "15,000+",
     label: "Happy Customers",
   },
   {
-    icon: <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6 text-brand-accent" strokeWidth={1.5} />,
+    icon: <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6 text-primary-accent" strokeWidth={1.5} />,
     value: "98%",
     label: "Verified & Trusted",
   },
   {
-    icon: <Star className="h-5 w-5 sm:h-6 sm:w-6 text-brand-accent" strokeWidth={1.5} />,
+    icon: <Star className="h-5 w-5 sm:h-6 sm:w-6 text-primary-accent" strokeWidth={1.5} />,
     value: "4.8/5",
     label: "Customer Rating",
   },

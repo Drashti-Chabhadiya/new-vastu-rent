@@ -63,3 +63,15 @@ export const useUpdateUserRole = () => {
     }
   })
 }
+
+// Fetch public user profile
+export const useUserProfile = (id: string) => {
+  return useQuery({
+    queryKey: ['user-profile', id],
+    queryFn: async () => {
+      const res = await apiClient.get(`/users/profile/${id}`)
+      return res.data
+    },
+    enabled: !!id
+  })
+}

@@ -46,7 +46,7 @@ export function LoginForm() {
       {/* Top Right "New here? Sign up" */}
       <div className="absolute -top-6 right-0 sm:-top-16 flex items-center gap-1.5 text-sm font-medium">
         <span className="text-gray-500">New here?</span>
-        <Link to="/signup" className="text-auth-brand-dark font-bold hover:text-brand-light transition-colors">
+        <Link to="/signup" className="text-primary font-bold hover:bg-primary-light transition-colors">
           Sign up
         </Link>
       </div>
@@ -63,10 +63,10 @@ export function LoginForm() {
       {/* Tabs */}
       <div className="flex w-full mb-8">
         <div className="flex-1 flex flex-col">
-          <button className="py-3 text-[15px] font-bold text-brand-light text-center w-full">
+          <button className="py-3 text-[15px] font-bold bg-primary-light text-center w-full">
             Login
           </button>
-          <div className="h-0.5 w-full bg-brand-light rounded-t-full"></div>
+          <div className="h-0.5 w-full bg-primary-light rounded-t-full"></div>
         </div>
         <div className="flex-1 flex flex-col">
           <Link to="/signup" className="py-3 text-[15px] font-semibold text-gray-400 text-center w-full hover:text-gray-600">
@@ -101,7 +101,7 @@ export function LoginForm() {
           <Field>
             <div className="flex items-center justify-between mb-1.5">
               <FieldLabel className="text-[13px] font-bold text-gray-900">Password</FieldLabel>
-              <button type="button" className="text-[13px] font-bold text-brand-light hover:underline">
+              <button type="button" className="text-[13px] font-bold bg-primary-light hover:underline">
                 Forgot Password?
               </button>
             </div>
@@ -139,7 +139,7 @@ export function LoginForm() {
               className="flex items-center gap-2.5"
               onClick={() => setRememberMe(!rememberMe)}
             >
-              <div className={`w-4 h-4 rounded-[4px] flex items-center justify-center border transition-colors ${rememberMe ? 'bg-auth-brand-dark border-auth-brand-dark' : 'bg-white border-gray-300'}`}>
+              <div className={`w-4 h-4 rounded-[4px] flex items-center justify-center border transition-colors ${rememberMe ? 'bg-primary border-primary' : 'bg-white border-gray-300'}`}>
                 {rememberMe && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
               </div>
               <span className="text-[13px] font-bold text-gray-900">Remember me</span>
@@ -156,7 +156,7 @@ export function LoginForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full h-12 rounded-xl bg-auth-brand-dark text-white text-[15px] font-bold hover:bg-auth-brand-dark/90 transition-colors"
+            className="w-full h-12 rounded-xl bg-primary text-white text-[15px] font-bold hover:bg-primary/90 transition-colors"
           >
             {isSubmitting ? "Logging in..." : "Login"}
           </Button>
@@ -188,9 +188,9 @@ export function LoginForm() {
 
       <p className="text-center text-[12px] text-gray-500 max-w-[340px] mx-auto leading-relaxed">
         By continuing, you agree to our{" "}
-        <a href="#" className="font-bold text-brand-light hover:underline">Terms & Conditions</a>
+        <a href="#" className="font-bold bg-primary-light hover:underline">Terms & Conditions</a>
         {" "}and{" "}
-        <a href="#" className="font-bold text-brand-light hover:underline">Privacy Policy</a>.
+        <a href="#" className="font-bold bg-primary-light hover:underline">Privacy Policy</a>.
       </p>
     </div>
   );
