@@ -1,140 +1,54 @@
-import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card"
-import { Button } from "#/components/ui/button"
-import { CheckCircle2, Search, Calendar, UserCheck, ShieldCheck, CreditCard } from "lucide-react"
-import { Link } from "@tanstack/react-router"
+import { motion, type Variants } from "motion/react";
+
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
 
 const steps = [
-  {
-    icon: <Search className="w-10 h-10 text-primary" />,
-    title: "1. Find What You Need",
-    description: "Browse our extensive catalog of rental items, from electronics and furniture to vehicles and tools."
-  },
-  {
-    icon: <Calendar className="w-10 h-10 text-primary" />,
-    title: "2. Choose Your Dates",
-    description: "Select the pickup and return dates that work for you. Our system ensures items are available when you need them."
-  },
-  {
-    icon: <CreditCard className="w-10 h-10 text-primary" />,
-    title: "3. Secure Booking",
-    description: "Pay securely through our platform. Your money is held safely until the rental process is complete."
-  },
-  {
-    icon: <UserCheck className="w-10 h-10 text-primary" />,
-    title: "4. Meet and Collect",
-    description: "Coordinate with the owner to pick up the item. Verify its condition and you're good to go!"
-  }
-]
+  { n: "01", t: "Discover", d: "Browse a quietly curated catalogue from neighbors near you." },
+  { n: "02", t: "Reserve", d: "Pick your dates, message the host, pay through secure escrow." },
+  { n: "03", t: "Live with it", d: "Pick up or have it delivered. Use it, love it, return it." },
+];
 
-const benefits = [
-  {
-    title: "Verified Users",
-    description: "Every user on our platform undergoes a verification process to ensure safety and trust.",
-    icon: <ShieldCheck className="w-6 h-6 text-primary" />
-  },
-  {
-    title: "Quality Guarantee",
-    description: "We encourage honest reviews and high standards to ensure you get what you pay for.",
-    icon: <CheckCircle2 className="w-6 h-6 text-primary" />
-  }
-]
-
-export function HowItWorksPage() {
+export function HowItWorks() {
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Hero Section */}
-      <section className="bg-white py-20 border-b border-gray-100">
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-6">
-            Renting Made Simple
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Vastu-Rent connects people who have things with people who need them. It's the smarter, more sustainable way to live.
+    <section id="how-it-works" className="mx-auto max-w-[1400px] px-6 py-24 md:px-10 md:py-32">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-4">
+          <div className="text-[11px] uppercase tracking-[0.22em] text-primary">— How it works</div>
+          <h2 className="mt-4 font-display text-[clamp(2rem,3.6vw,3rem)] leading-[1.05] tracking-tight text-foreground text-balance">
+            A calm, three-step ritual.
+          </h2>
+          <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
+            No subscriptions. No clutter. Just the things you need, for as long as you need them.
           </p>
         </div>
-      </section>
 
-      {/* Steps Grid */}
-      <section className="py-20">
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">How it works for Renters</h2>
-            <div className="w-20 h-1.5 bg-primary mx-auto rounded-full" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, index) => (
-              <Card key={index} className="bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 rounded-[32px] overflow-hidden group">
-                <CardHeader className="pt-10 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                    {step.icon}
-                  </div>
-                </CardHeader>
-                <CardContent className="text-center px-8 pb-10">
-                  <CardTitle className="text-xl font-bold text-gray-900 mb-3">{step.title}</CardTitle>
-                  <p className="text-gray-600 leading-relaxed text-sm">{step.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Trust & Safety Section */}
-      <section className="py-12 bg-white">
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-primary/5 rounded-[40px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-12">
-            <div className="lg:w-1/2">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Built on Trust and Safety</h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                We've built Vastu-Rent with security at its core. From verified profiles to secure payments, we've got you covered every step of the way.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {benefits.map((benefit, i) => (
-                  <div key={i} className="flex gap-4">
-                    <div className="shrink-0 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-                      {benefit.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-1">{benefit.title}</h4>
-                      <p className="text-sm text-gray-600">{benefit.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="lg:w-1/2">
-              <img 
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80" 
-                alt="Safety" 
-                className="rounded-[32px] shadow-2xl bg-white"
-                onError={(e) => {
-                  (e.target as any).src = 'https://placehold.co/800x600/166534/FFFFFF/png?text=Trust+and+Safety'
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 text-center">
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Ready to start renting?</h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to={"/" as any}>
-              <Button className="h-14 px-10 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl text-lg">
-                Browse Items
-              </Button>
-            </Link>
-            <Link to={"/become-lister" as any}>
-              <Button variant="outline" className="h-14 px-10 border-gray-200 hover:bg-gray-50 text-gray-900 font-bold rounded-2xl text-lg">
-                Learn to List
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
-  )
+        <motion.ol
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border lg:col-span-8 lg:grid-cols-3"
+        >
+          {steps.map((s) => (
+            <motion.li variants={fadeUp} key={s.n} className="bg-background p-8 md:p-10">
+              <div className="font-display text-[40px] leading-none text-primary">{s.n}</div>
+              <div className="mt-6 font-display text-xl text-foreground">{s.t}</div>
+              <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{s.d}</p>
+            </motion.li>
+          ))}
+        </motion.ol>
+      </div>
+    </section>
+  );
 }

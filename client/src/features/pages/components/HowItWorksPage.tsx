@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "#/components/ui/card"
 import { Button } from "#/components/ui/button"
 import { CheckCircle2, Search, Calendar, UserCheck, ShieldCheck, CreditCard } from "lucide-react"
@@ -5,22 +6,22 @@ import { Link } from "@tanstack/react-router"
 
 const steps = [
   {
-    icon: <Search className="w-10 h-10 text-brand" />,
+    icon: <Search className="w-10 h-10 text-primary" />,
     title: "1. Find What You Need",
     description: "Browse our extensive catalog of rental items, from electronics and furniture to vehicles and tools."
   },
   {
-    icon: <Calendar className="w-10 h-10 text-brand" />,
+    icon: <Calendar className="w-10 h-10 text-primary" />,
     title: "2. Choose Your Dates",
     description: "Select the pickup and return dates that work for you. Our system ensures items are available when you need them."
   },
   {
-    icon: <CreditCard className="w-10 h-10 text-brand" />,
+    icon: <CreditCard className="w-10 h-10 text-primary" />,
     title: "3. Secure Booking",
     description: "Pay securely through our platform. Your money is held safely until the rental process is complete."
   },
   {
-    icon: <UserCheck className="w-10 h-10 text-brand" />,
+    icon: <UserCheck className="w-10 h-10 text-primary" />,
     title: "4. Meet and Collect",
     description: "Coordinate with the owner to pick up the item. Verify its condition and you're good to go!"
   }
@@ -30,12 +31,12 @@ const benefits = [
   {
     title: "Verified Users",
     description: "Every user on our platform undergoes a verification process to ensure safety and trust.",
-    icon: <ShieldCheck className="w-6 h-6 text-brand" />
+    icon: <ShieldCheck className="w-6 h-6 text-primary" />
   },
   {
     title: "Quality Guarantee",
     description: "We encourage honest reviews and high standards to ensure you get what you pay for.",
-    icon: <CheckCircle2 className="w-6 h-6 text-brand" />
+    icon: <CheckCircle2 className="w-6 h-6 text-primary" />
   }
 ]
 
@@ -59,14 +60,14 @@ export function HowItWorksPage() {
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How it works for Renters</h2>
-            <div className="w-20 h-1.5 bg-brand mx-auto rounded-full" />
+            <div className="w-20 h-1.5 bg-primary mx-auto rounded-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
               <Card key={index} className="bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 rounded-[32px] overflow-hidden group">
                 <CardHeader className="pt-10 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-brand/5 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                     {step.icon}
                   </div>
                 </CardHeader>
@@ -83,7 +84,7 @@ export function HowItWorksPage() {
       {/* Trust & Safety Section */}
       <section className="py-12 bg-white">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-          <div className="bg-brand/5 rounded-[40px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-12">
+          <div className="bg-primary/5 rounded-[40px] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Built on Trust and Safety</h2>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
@@ -123,7 +124,7 @@ export function HowItWorksPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Ready to start renting?</h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link to={"/" as any}>
-              <Button className="h-14 px-10 bg-brand hover:bg-brand-hover text-white font-bold rounded-2xl text-lg">
+              <Button className="h-14 px-10 bg-primary hover:bg-primary-hover text-white font-bold rounded-2xl text-lg">
                 Browse Items
               </Button>
             </Link>

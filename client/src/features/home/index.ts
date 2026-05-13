@@ -8,4 +8,4 @@ export * from "./components/StatsSection"
 export * from "./components/Categories"
 export * from "./components/Journal"
 export * from "./components/Editorial"
-
+export * from "../pages/components/HowItWorksPage"
