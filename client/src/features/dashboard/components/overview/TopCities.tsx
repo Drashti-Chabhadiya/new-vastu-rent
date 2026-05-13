@@ -22,7 +22,7 @@ export const TopCities = () => {
             <span className="text-xs font-bold text-dash-text-soft w-24">{city.name}</span>
             <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden mx-4">
               <div 
-                className="h-full bg-dash-brand rounded-full transition-all duration-1000 group-hover:bg-brand-light"
+                className="h-full bg-dash-brand rounded-full transition-all duration-1000 group-hover:bg-primary-light"
                 style={{ width: `${city.percentage}%` }}
               ></div>
             </div>

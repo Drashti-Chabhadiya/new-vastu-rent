@@ -28,7 +28,7 @@ export class ProductService {
       if (maxPrice) where.price.lte = parseFloat(maxPrice);
     }
 
-    return prisma.product.findMany({
+    const products = await prisma.product.findMany({
       where,
       orderBy: { createdAt: "desc" },
       include: {
@@ -36,8 +36,22 @@ export class ProductService {
         owner: {
           select: { id: true, name: true, email: true, image: true },
         },
+        reviews: {
+          select: { rating: true }
+        },
+        _count: {
+          select: { reviews: true }
+        }
       },
     });
+
+    return products.map(p => ({
+      ...p,
+      reviewsCount: p._count.reviews,
+      rating: p.reviews.length > 0 
+        ? (p.reviews.reduce((acc, r) => acc + r.rating, 0) / p.reviews.length).toFixed(1)
+        : "5.0"
+    }));
   }
 
   async getRecentProducts() {
@@ -52,17 +66,62 @@ export class ProductService {
   }
 
   async getProductById(id: string) {
-    return prisma.product.findUnique({
+    const product = await prisma.product.findUnique({
       where: { id },
       include: {
         category: true,
-        owner: { select: { id: true, name: true, email: true, image: true } },
+        owner: { 
+          include: {
+            products: {
+              include: {
+                reviews: {
+                  select: { rating: true }
+                }
+              }
+            },
+            _count: {
+              select: { products: true }
+            }
+          } 
+        },
         reviews: {
           include: { user: { select: { name: true, image: true } } },
           orderBy: { createdAt: "desc" }
+        },
+        _count: {
+          select: { reviews: true }
         }
       },
     });
+
+    if (!product) return null;
+
+    // Calculate owner's average rating
+    let ownerTotalRating = 0;
+    let ownerReviewCount = 0;
+    product.owner.products.forEach(p => {
+      p.reviews.forEach(r => {
+        ownerTotalRating += r.rating;
+        ownerReviewCount++;
+      });
+    });
+    const ownerRating = ownerReviewCount > 0 ? (ownerTotalRating / ownerReviewCount).toFixed(1) : "5.0";
+
+    return {
+      ...product,
+      reviewsCount: product._count.reviews,
+      rating: product.reviews.length > 0 
+        ? (product.reviews.reduce((acc, r) => acc + r.rating, 0) / product.reviews.length).toFixed(1)
+        : "5.0",
+      owner: {
+        id: product.owner.id,
+        name: product.owner.name,
+        image: product.owner.image,
+        createdAt: product.owner.createdAt,
+        rating: ownerRating,
+        listingsCount: product.owner._count.products
+      }
+    };
   }
 
   async createProduct(data: any) {

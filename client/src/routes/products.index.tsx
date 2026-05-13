@@ -40,7 +40,7 @@ function ProductsPage() {
               <SlidersHorizontal className="w-5 h-5" />
               Filters
             </Button>
-            <Button className="h-14 px-8 rounded-2xl bg-brand hover:bg-brand-hover text-white font-bold shadow-lg shadow-brand/20">
+            <Button className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary-hover text-white font-bold shadow-lg shadow-brand/20">
               Search
             </Button>
           </div>
@@ -73,7 +73,7 @@ function ProductsPage() {
               <p className="text-gray-500 max-w-md mx-auto">We couldn't find any items matching your search. Try adjusting your keywords or filters.</p>
               <Button 
                 variant="outline" 
-                className="mt-8 rounded-xl font-bold text-brand border-brand hover:bg-brand/5"
+                className="mt-8 rounded-xl font-bold text-primary border-brand hover:bg-primary/5"
                 onClick={() => setSearchTerm('')}
               >
                 Clear Search

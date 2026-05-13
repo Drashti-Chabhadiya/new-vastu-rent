@@ -62,7 +62,7 @@ function ProfileListingsPage() {
           <p className="text-gray-500 font-medium">You have {listings?.length || 0} active listings.</p>
         </div>
         <Link to="/profile/listings/new">
-          <Button className="bg-brand hover:bg-brand-hover text-white font-bold h-12 px-6 rounded-xl transition-all shadow-lg shadow-brand/20 flex items-center gap-2">
+          <Button className="bg-primary hover:bg-primary-hover text-white font-bold h-12 px-6 rounded-xl transition-all shadow-lg shadow-brand/20 flex items-center gap-2">
             <Plus size={18} />
             Create New Listing
           </Button>
@@ -70,14 +70,14 @@ function ProfileListingsPage() {
       </div>
       
       {!listings || listings.length === 0 ? (
-        <div className="bg-brand/5 border border-brand/10 rounded-[32px] p-12 text-center">
-          <div className="w-20 h-20 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Package className="w-10 h-10 text-brand" />
+        <div className="bg-primary/5 border border-brand/10 rounded-[32px] p-12 text-center">
+          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Package className="w-10 h-10 text-primary" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">No listings yet</h3>
           <p className="text-gray-500 mb-8 max-w-sm mx-auto">Start earning by listing your unused items today. It's quick, easy, and secure.</p>
           <Link to="/profile/listings/new">
-            <Button className="bg-brand hover:bg-brand-hover text-white font-bold h-12 px-8 rounded-xl transition-all shadow-lg shadow-brand/20">
+            <Button className="bg-primary hover:bg-primary-hover text-white font-bold h-12 px-8 rounded-xl transition-all shadow-lg shadow-brand/20">
               Create First Listing
             </Button>
           </Link>
@@ -107,7 +107,7 @@ function ProfileListingsPage() {
               
               <div className="p-6 flex-1 flex flex-col">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg font-bold text-gray-900 leading-tight group-hover:text-brand transition-colors line-clamp-1">
+                  <h3 className="text-lg font-bold text-gray-900 leading-tight group-hover:bg-primary transition-colors line-clamp-1">
                     {item.title}
                   </h3>
                   <div className="flex items-center gap-1 text-yellow-500 font-bold text-sm shrink-0">
@@ -118,11 +118,11 @@ function ProfileListingsPage() {
                 
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center gap-2 text-gray-500 text-xs font-medium">
-                    <MapPin size={14} className="text-brand" />
+                    <MapPin size={14} className="text-primary" />
                     {item.location}
                   </div>
                   <div className="flex items-center gap-2 text-gray-900 text-base font-black">
-                    <IndianRupee size={16} className="text-brand" />
+                    <IndianRupee size={16} className="text-primary" />
                     {item.price}
                     <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">/ day</span>
                   </div>
@@ -130,7 +130,7 @@ function ProfileListingsPage() {
                 
                 <div className="flex gap-2 mt-auto">
                   <Link to={`/products/${item.id}`} className="flex-1">
-                    <Button variant="outline" className="w-full rounded-xl h-10 font-bold border-gray-100 hover:bg-gray-50 hover:text-brand transition-all gap-2">
+                    <Button variant="outline" className="w-full rounded-xl h-10 font-bold border-gray-100 hover:bg-gray-50 hover:text-primary transition-all gap-2">
                       <ExternalLink size={14} />
                       View
                     </Button>

@@ -5,3 +5,7 @@ export * from "./components/HowItWorks"
 export * from "./components/OwnerCTA"
 export * from "./components/PopularItems"
 export * from "./components/StatsSection"
+export * from "./components/Categories"
+export * from "./components/Journal"
+export * from "./components/Editorial"
+

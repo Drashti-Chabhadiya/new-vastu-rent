@@ -64,7 +64,7 @@ export const ReviewsManagement = () => {
                 <tr key={review.id} className="hover:bg-gray-50/50 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-brand-light/10 flex items-center justify-center text-brand-light font-bold text-xs">
+                      <div className="w-9 h-9 rounded-full bg-primary-light/10 flex items-center justify-center bg-primary-light font-bold text-xs">
                         {review.user?.image ? (
                           <img src={review.user.image} alt={review.user.name} className="w-full h-full rounded-full object-cover" />
                         ) : (

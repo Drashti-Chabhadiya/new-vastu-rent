@@ -40,13 +40,13 @@ export function ProfileLayout({ children, activeTab }: ProfileLayoutProps) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
         <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <User className="w-10 h-10 text-brand" />
+          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <User className="w-10 h-10 text-primary" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
           <p className="text-gray-600 mb-8">Please sign in to view your profile and manage your rentals.</p>
           <Link to="/login" className="block">
-            <Button className="w-full bg-brand hover:bg-brand-hover text-white h-12 rounded-xl font-bold">
+            <Button className="w-full bg-primary hover:bg-primary-hover text-white h-12 rounded-xl font-bold">
               Sign In
             </Button>
           </Link>
@@ -63,7 +63,7 @@ export function ProfileLayout({ children, activeTab }: ProfileLayoutProps) {
           <aside className="w-full lg:w-80 shrink-0">
             <div className="bg-white rounded-[32px] border border-gray-100 shadow-sm overflow-hidden p-6">
               <div className="flex items-center gap-4 mb-8 p-2">
-                <div className="w-16 h-16 rounded-2xl bg-brand flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-brand/20 shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-brand/20 shrink-0">
                   {session.user.name?.[0]?.toUpperCase() || 'U'}
                 </div>
                 <div className="min-w-0">
@@ -83,12 +83,12 @@ export function ProfileLayout({ children, activeTab }: ProfileLayoutProps) {
                       className={cn(
                         "flex items-center justify-between p-4 rounded-2xl transition-all duration-200 group",
                         isActive 
-                          ? "bg-brand text-white shadow-lg shadow-brand/30" 
-                          : "text-gray-600 hover:bg-brand/5 hover:text-brand"
+                          ? "bg-primary text-white shadow-lg shadow-brand/30" 
+                          : "text-gray-600 hover:bg-primary/5 hover:text-primary"
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon size={20} className={cn("transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:text-brand")} />
+                        <Icon size={20} className={cn("transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:bg-primary")} />
                         <span className="font-bold text-[13px]">{item.label}</span>
                       </div>
                       <ChevronRight size={16} className={cn("transition-all duration-300", isActive ? "text-white opacity-70 translate-x-1" : "text-gray-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-1")} />

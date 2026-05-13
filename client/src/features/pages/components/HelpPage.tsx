@@ -41,11 +41,11 @@ export function HelpPage() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Search Header */}
-      <section className="bg-brand py-20 px-4">
+      <section className="bg-primary py-20 px-4">
         <div className="mx-auto max-w-4xl text-center">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-8">How can we help you today?</h1>
           <div className="relative max-w-2xl mx-auto group">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand transition-colors" size={24} />
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:bg-primary transition-colors" size={24} />
             <input 
               type="text"
               placeholder="Search for answers..."
@@ -114,13 +114,13 @@ export function HelpPage() {
 
       {/* Contact Support */}
       <section className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
-        <div className="bg-brand/5 border border-brand/10 rounded-[40px] p-10 sm:p-16 text-center">
+        <div className="bg-primary/5 border border-brand/10 rounded-[40px] p-10 sm:p-16 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Still need help?</h2>
           <p className="text-gray-600 mb-12 max-w-xl mx-auto">Our support team is available 24/7 to help you with any questions or issues you might have.</p>
           <div className="flex flex-wrap items-center justify-center gap-8">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <Mail className="text-brand" />
+                <Mail className="text-primary" />
               </div>
               <div className="text-left">
                 <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Email us</p>
@@ -129,7 +129,7 @@ export function HelpPage() {
             </div>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <MessageCircle className="text-brand" />
+                <MessageCircle className="bg-primary" />
               </div>
               <div className="text-left">
                 <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Live Chat</p>
@@ -138,7 +138,7 @@ export function HelpPage() {
             </div>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <Phone className="text-brand" />
+                <Phone className="bg-primary" />
               </div>
               <div className="text-left">
                 <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Call us</p>

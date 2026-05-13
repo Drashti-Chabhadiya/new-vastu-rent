@@ -22,6 +22,8 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProfileIndexRouteImport } from './routes/profile.index'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
+import { Route as CategoriesIndexRouteImport } from './routes/categories.index'
+import { Route as UsersIdRouteImport } from './routes/users.$id'
 import { Route as ProfileSettingsRouteImport } from './routes/profile.settings'
 import { Route as ProfileListingsRouteImport } from './routes/profile.listings'
 import { Route as ProfileBookingsRouteImport } from './routes/profile.bookings'
@@ -94,6 +96,16 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProductsRoute,
 } as any)
+const CategoriesIndexRoute = CategoriesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CategoriesRoute,
+} as any)
+const UsersIdRoute = UsersIdRouteImport.update({
+  id: '/users/$id',
+  path: '/users/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileSettingsRoute = ProfileSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -143,6 +155,8 @@ export interface FileRoutesByFullPath {
   '/profile/bookings': typeof ProfileBookingsRoute
   '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
+  '/users/$id': typeof UsersIdRoute
+  '/categories/': typeof CategoriesIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/profile/': typeof ProfileIndexRoute
 }
@@ -150,7 +164,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/become-lister': typeof BecomeListerRoute
-  '/categories': typeof CategoriesRouteWithChildren
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
@@ -162,6 +175,8 @@ export interface FileRoutesByTo {
   '/profile/bookings': typeof ProfileBookingsRoute
   '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
+  '/users/$id': typeof UsersIdRoute
+  '/categories': typeof CategoriesIndexRoute
   '/products': typeof ProductsIndexRoute
   '/profile': typeof ProfileIndexRoute
 }
@@ -184,6 +199,8 @@ export interface FileRoutesById {
   '/profile/bookings': typeof ProfileBookingsRoute
   '/profile/listings': typeof ProfileListingsRoute
   '/profile/settings': typeof ProfileSettingsRoute
+  '/users/$id': typeof UsersIdRoute
+  '/categories/': typeof CategoriesIndexRoute
   '/products/': typeof ProductsIndexRoute
   '/profile/': typeof ProfileIndexRoute
 }
@@ -207,6 +224,8 @@ export interface FileRouteTypes {
     | '/profile/bookings'
     | '/profile/listings'
     | '/profile/settings'
+    | '/users/$id'
+    | '/categories/'
     | '/products/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
@@ -214,7 +233,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/become-lister'
-    | '/categories'
     | '/help'
     | '/how-it-works'
     | '/login'
@@ -226,6 +244,8 @@ export interface FileRouteTypes {
     | '/profile/bookings'
     | '/profile/listings'
     | '/profile/settings'
+    | '/users/$id'
+    | '/categories'
     | '/products'
     | '/profile'
   id:
@@ -247,6 +267,8 @@ export interface FileRouteTypes {
     | '/profile/bookings'
     | '/profile/listings'
     | '/profile/settings'
+    | '/users/$id'
+    | '/categories/'
     | '/products/'
     | '/profile/'
   fileRoutesById: FileRoutesById
@@ -264,6 +286,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   WishlistRoute: typeof WishlistRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  UsersIdRoute: typeof UsersIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -359,6 +382,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/categories/': {
+      id: '/categories/'
+      path: '/'
+      fullPath: '/categories/'
+      preLoaderRoute: typeof CategoriesIndexRouteImport
+      parentRoute: typeof CategoriesRoute
+    }
+    '/users/$id': {
+      id: '/users/$id'
+      path: '/users/$id'
+      fullPath: '/users/$id'
+      preLoaderRoute: typeof UsersIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile/settings': {
       id: '/profile/settings'
       path: '/settings'
@@ -406,10 +443,12 @@ declare module '@tanstack/react-router' {
 
 interface CategoriesRouteChildren {
   CategoriesIdRoute: typeof CategoriesIdRoute
+  CategoriesIndexRoute: typeof CategoriesIndexRoute
 }
 
 const CategoriesRouteChildren: CategoriesRouteChildren = {
   CategoriesIdRoute: CategoriesIdRoute,
+  CategoriesIndexRoute: CategoriesIndexRoute,
 }
 
 const CategoriesRouteWithChildren = CategoriesRoute._addFileChildren(
@@ -460,6 +499,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   WishlistRoute: WishlistRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  UsersIdRoute: UsersIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

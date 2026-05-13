@@ -1,6 +1,6 @@
+import { Logo } from "#/components/layout/Logo";
 import { ShieldCheck, CreditCard, Headphones, Home, Car, Percent } from "lucide-react";
 
-// 1. DATA ARRAY: Changed image imports to absolute path strings
 const floatingItems = [
   {
     title: "Camera",
@@ -39,26 +39,14 @@ export function AuthLeftSection() {
     <div className="relative hidden flex-1 overflow-hidden bg-auth-section-bg p-12 lg:flex lg:flex-col lg:justify-between rounded-[28px]">
       <div className="relative z-10 flex w-full flex-col">
         {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-light)" strokeWidth="1.8" className="h-10 w-10">
-              <path d="M3 10l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <path d="M8 16c1.5-1 2.5-2 4-2s2.5 1 4 2" />
-              <path d="M12 14V9" />
-            </svg>
-          </div>
-          <div className="leading-tight">
-            <h2 className="text-[26px] font-extrabold text-brand-light tracking-tight">vastu-rent</h2>
-            <p className="text-[12px] text-gray-500">Rent Anything. Live in Harmony.</p>
-          </div>
-        </div>
+         <Logo />
 
         {/* Hero */}
         <div className="mt-12">
           <h1 className="text-[52px] font-extrabold leading-[1.05] tracking-tight text-text-dark">
             Rent Anything,
             <br />
-            <span className="text-brand-light">Live Smarter</span>
+            <span className="text-primary">Live Smarter</span>
           </h1>
           <p className="mt-5 text-[16px] text-gray-500 max-w-[440px] leading-relaxed">
             Join thousands of happy users who are renting anything they need, anytime, anywhere.
@@ -77,16 +65,16 @@ export function AuthLeftSection() {
 
           {/* Floating category icons */}
           <div className="absolute top-[6%] left-[32%] z-20 h-9 w-9 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-md">
-            <Home className="h-4 w-4 text-brand-light" />
+            <Home className="h-4 w-4 bg-primary-light" />
           </div>
           <div className="absolute top-[8%] right-[34%] z-20 h-9 w-9 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-md">
-            <Percent className="h-4 w-4 text-brand-light" />
+            <Percent className="h-4 w-4 bg-primary-light" />
           </div>
           <div className="absolute top-[55%] left-[33%] z-20 h-9 w-9 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-md">
-            <Car className="h-4 w-4 text-brand-light" />
+            <Car className="h-4 w-4 bg-primary-light" />
           </div>
           <div className="absolute top-[55%] right-[36%] z-20 h-9 w-9 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-md">
-            <Car className="h-4 w-4 text-brand-light" />
+            <Car className="h-4 w-4 bg-primary-light" />
           </div>
 
           {/* 2. DIRECT IMAGES: Updated src to use string paths */}
@@ -127,7 +115,7 @@ export function AuthLeftSection() {
               </div>
               <div className="mt-2 px-1 pb-1">
                 <h4 className="text-[11px] font-bold text-gray-900">{item.title}</h4>
-                <p className="text-[12px] font-extrabold text-brand-light mt-0.5">
+                <p className="text-[12px] font-extrabold bg-primary-light mt-0.5">
                   {item.price}
                   <span className="text-[10px] font-medium text-gray-400">/day</span>
                 </p>
@@ -141,7 +129,7 @@ export function AuthLeftSection() {
       <div className="grid grid-cols-3 gap-4 rounded-2xl bg-auth-card-bg p-5 mt-6">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <ShieldCheck className="h-5 w-5 text-brand-light" />
+            <ShieldCheck className="h-5 w-5 bg-primary-light" />
           </div>
           <div className="leading-tight">
             <h4 className="text-[12px] font-bold text-gray-900">Trusted & Verified</h4>
@@ -150,7 +138,7 @@ export function AuthLeftSection() {
         </div>
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <CreditCard className="h-5 w-5 text-brand-light" />
+            <CreditCard className="h-5 w-5 bg-primary-light" />
           </div>
           <div className="leading-tight">
             <h4 className="text-[12px] font-bold text-gray-900">Secure Payments</h4>
@@ -159,7 +147,7 @@ export function AuthLeftSection() {
         </div>
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <Headphones className="h-5 w-5 text-brand-light" />
+            <Headphones className="h-5 w-5 bg-primary-light" />
           </div>
           <div className="leading-tight">
             <h4 className="text-[12px] font-bold text-gray-900">24/7 Support</h4>

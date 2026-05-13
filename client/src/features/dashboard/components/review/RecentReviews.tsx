@@ -55,7 +55,7 @@ export const RecentReviews = () => {
                       <Star 
                         key={i} 
                         size={12} 
-                        className={i < review.rating ? "fill-brand-light text-brand-light" : "text-gray-200"} 
+                        className={i < review.rating ? "fill-brand-light bg-primary-light" : "text-gray-200"} 
                       />
                     ))}
                   </div>

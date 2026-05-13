@@ -16,7 +16,7 @@ export function CategoryDetail() {
   const category = categories?.find((c: any) => c.id === id)
 
   const filteredProducts = products?.filter((p: any) => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (p.title || p.name)?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   return (
@@ -26,7 +26,7 @@ export function CategoryDetail() {
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8">
           <Link 
             to={"/categories" as any} 
-            className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-brand transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:bg-primary transition-colors mb-8"
           >
             <ArrowLeft size={16} />
             Back to All Categories
@@ -41,13 +41,13 @@ export function CategoryDetail() {
                 {category?.name || "Category Items"}
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl">
-                Explore our curated collection of {category?.name.toLowerCase()} available for rent. High quality, affordable, and ready for you.
+                Explore our curated collection of {category?.name?.toLowerCase() || "items"} available for rent. High quality, affordable, and ready for you.
               </p>
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="text-center px-6 py-3 bg-brand/5 rounded-2xl border border-brand/10">
-                <p className="text-2xl font-bold text-brand">{products?.length || 0}</p>
+              <div className="text-center px-6 py-3 bg-primary/5 rounded-2xl border border-brand/10">
+                <p className="text-2xl font-bold bg-primary">{products?.length || 0}</p>
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Items</p>
               </div>
             </div>
@@ -59,7 +59,7 @@ export function CategoryDetail() {
         {/* Filters and Search Bar */}
         <div className="flex flex-col md:flex-row items-center gap-4 mb-10">
           <div className="relative flex-1 group w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand transition-colors" size={20} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:bg-primary transition-colors" size={20} />
             <input 
               type="text"
               placeholder={`Search in ${category?.name || 'this category'}...`}

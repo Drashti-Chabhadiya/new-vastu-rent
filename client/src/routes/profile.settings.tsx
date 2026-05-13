@@ -12,7 +12,7 @@ export const Route = createFileRoute('/profile/settings')({
             <h4 className="font-bold text-gray-900">Email Notifications</h4>
             <p className="text-sm text-gray-500">Receive updates about your bookings and listings.</p>
           </div>
-          <div className="w-12 h-6 bg-brand rounded-full relative">
+          <div className="w-12 h-6 bg-primary rounded-full relative">
             <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
           </div>
         </div>
@@ -22,7 +22,7 @@ export const Route = createFileRoute('/profile/settings')({
             <h4 className="font-bold text-gray-900">Two-Factor Authentication</h4>
             <p className="text-sm text-gray-500">Add an extra layer of security to your account.</p>
           </div>
-          <button className="text-brand font-bold text-sm hover:underline">Enable</button>
+          <button className="text-primary font-bold text-sm hover:underline">Enable</button>
         </div>
 
         <div className="bg-red-50/50 border border-red-100 rounded-2xl p-6 flex items-center justify-between">

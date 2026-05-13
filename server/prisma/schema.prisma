@@ -94,14 +94,23 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  title       String   // e.g., "Canon EOS R5" or "Designer Wedding Dress"
-  description String
-  price       Float    // Rent per day/hour
-  securityDeposit Float @default(0) // Refundable deposit
-  location    String   // કઈ જગ્યાએ વસ્તુ ઉપલબ્ધ છે
-  images      String[] // Image URLs
-  isAvailable Boolean  @default(true)
+  id              String   @id @default(cuid())
+  title           String   // e.g., "Canon EOS R5" or "Designer Wedding Dress"
+  description     String
+  price           Float    // Rent per day/hour
+  securityDeposit Float    @default(0) // Refundable deposit
+  location        String   // કઈ જગ્યાએ વસ્તુ ઉપલબ્ધ છે
+  images          String[] // Image URLs
+  isAvailable     Boolean  @default(true)
+  
+  // New Enhanced Fields
+  condition       String?  // e.g., "Like New", "Good", "Fair"
+  features        String[] // ["WiFi", "4K Video", "Touchscreen"]
+  deliveryOptions String[] // ["Pickup", "Delivery", "Self-Pickup"]
+  pickupReturnDetails String?
+  tags            String[] // ["Photography", "Camera", "Canon"]
+  minDuration     Int      @default(1) // Minimum rental days
+  maxDuration     Int?     // Maximum rental days (null for unlimited)
   
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])

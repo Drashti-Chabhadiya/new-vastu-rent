@@ -47,7 +47,7 @@ export function SignupForm() {
       {/* Top Right "Already have account? Sign in" */}
       <div className="absolute -top-6 right-0 sm:-top-16 flex items-center gap-1.5 text-sm font-medium">
         <span className="text-gray-500">Already have account?</span>
-        <Link to="/login" className="text-auth-brand-dark font-bold hover:text-brand-light transition-colors">
+        <Link to="/login" className="text-primary font-bold hover:bg-primary-light transition-colors">
           Sign in
         </Link>
       </div>
@@ -70,10 +70,10 @@ export function SignupForm() {
           <div className="h-[1px] w-full bg-gray-200"></div>
         </div>
         <div className="flex-1 flex flex-col">
-          <button className="py-3 text-[15px] font-bold text-brand-light text-center w-full">
+          <button className="py-3 text-[15px] font-bold bg-primary-light text-center w-full">
             Sign Up
           </button>
-          <div className="h-0.5 w-full bg-brand-light rounded-t-full"></div>
+          <div className="h-0.5 w-full bg-primary-light rounded-t-full"></div>
         </div>
       </div>
 
@@ -174,7 +174,7 @@ export function SignupForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full h-12 rounded-xl bg-auth-brand-dark text-white text-[15px] font-bold hover:bg-auth-brand-dark/90 transition-colors mt-2"
+            className="w-full h-12 rounded-xl bg-primary text-white text-[15px] font-bold hover:bg-primary/90 transition-colors mt-2"
           >
             {isSubmitting ? "Creating Account..." : "Create Account"}
           </Button>
@@ -206,9 +206,9 @@ export function SignupForm() {
 
       <p className="text-center text-[12px] text-gray-500 max-w-[340px] mx-auto leading-relaxed">
         By continuing, you agree to our{" "}
-        <a href="#" className="font-bold text-brand-light hover:underline">Terms & Conditions</a>
+        <a href="#" className="font-bold bg-primary-light hover:underline">Terms & Conditions</a>
         {" "}and{" "}
-        <a href="#" className="font-bold text-brand-light hover:underline">Privacy Policy</a>.
+        <a href="#" className="font-bold bg-primary-light hover:underline">Privacy Policy</a>.
       </p>
     </div>
   );

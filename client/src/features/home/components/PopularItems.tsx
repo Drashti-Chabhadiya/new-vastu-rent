@@ -14,7 +14,7 @@ export function PopularItems() {
           <h2 className="text-2xl font-bold text-gray-900">Popular Items Near You</h2>
           <Link 
             to="/products" 
-            className="text-sm font-bold text-brand hover:text-brand-hover flex items-center gap-1 group transition-colors"
+            className="text-sm font-bold text-primary hover:text-primary-hover flex items-center gap-1 group transition-colors"
           >
             View all items 
             <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

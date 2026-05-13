@@ -92,8 +92,8 @@ export function PersonalInfo() {
           className={cn(
             "rounded-xl font-bold h-11 px-6 transition-all",
             isEditing 
-              ? "border-brand text-brand hover:bg-brand/5" 
-              : "bg-brand hover:bg-brand-hover text-white shadow-lg shadow-brand/20"
+              ? "border-brand bg-primary hover:bg-primary/5" 
+              : "bg-primary hover:bg-primary-hover text-white shadow-lg shadow-brand/20"
           )}
         >
           {isEditing ? "Cancel" : "Edit Profile"}
@@ -104,7 +104,7 @@ export function PersonalInfo() {
         {/* Avatar Section */}
         <div className="flex flex-col items-center gap-6">
           <div className="relative group">
-            <div className="w-32 h-32 lg:w-48 lg:h-48 rounded-[40px] bg-brand/5 border-4 border-white shadow-xl flex items-center justify-center text-4xl lg:text-6xl font-bold text-brand overflow-hidden relative">
+            <div className="w-32 h-32 lg:w-48 lg:h-48 rounded-[40px] bg-primary/5 border-4 border-white shadow-xl flex items-center justify-center text-4xl lg:text-6xl font-bold text-primary overflow-hidden relative">
               {imagePreview ? (
                 <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
               ) : session.user.image ? (
@@ -186,7 +186,7 @@ export function PersonalInfo() {
               <Button 
                 onClick={handleSaveChanges}
                 disabled={isSaving}
-                className="bg-brand hover:bg-brand-hover text-white h-12 px-8 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-brand/20"
+                className="bg-primary hover:bg-primary-hover text-white h-12 px-8 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-brand/20"
               >
                 {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
                 {isSaving ? "Saving..." : "Save Changes"}
