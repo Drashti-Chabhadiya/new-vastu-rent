@@ -16,6 +16,7 @@ import { Route as ProductsRouteImport } from './routes/products'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as DownloadRouteImport } from './routes/download'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as BecomeListerRouteImport } from './routes/become-lister'
 import { Route as AboutRouteImport } from './routes/about'
@@ -64,6 +65,11 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadRoute = DownloadRouteImport.update({
+  id: '/download',
+  path: '/download',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesRoute = CategoriesRouteImport.update({
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/become-lister': typeof BecomeListerRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/download': typeof DownloadRoute
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/become-lister': typeof BecomeListerRoute
+  '/download': typeof DownloadRoute
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/become-lister': typeof BecomeListerRoute
   '/categories': typeof CategoriesRouteWithChildren
+  '/download': typeof DownloadRoute
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
   '/login': typeof LoginRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/become-lister'
     | '/categories'
+    | '/download'
     | '/help'
     | '/how-it-works'
     | '/login'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/become-lister'
+    | '/download'
     | '/help'
     | '/how-it-works'
     | '/login'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/become-lister'
     | '/categories'
+    | '/download'
     | '/help'
     | '/how-it-works'
     | '/login'
@@ -278,6 +290,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BecomeListerRoute: typeof BecomeListerRoute
   CategoriesRoute: typeof CategoriesRouteWithChildren
+  DownloadRoute: typeof DownloadRoute
   HelpRoute: typeof HelpRoute
   HowItWorksRoute: typeof HowItWorksRoute
   LoginRoute: typeof LoginRoute
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/download': {
+      id: '/download'
+      path: '/download'
+      fullPath: '/download'
+      preLoaderRoute: typeof DownloadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categories': {
@@ -491,6 +511,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BecomeListerRoute: BecomeListerRoute,
   CategoriesRoute: CategoriesRouteWithChildren,
+  DownloadRoute: DownloadRoute,
   HelpRoute: HelpRoute,
   HowItWorksRoute: HowItWorksRoute,
   LoginRoute: LoginRoute,
