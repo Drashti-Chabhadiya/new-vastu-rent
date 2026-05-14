@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Vastu Rent',
   webDir: 'dist',
   server: {
-    url: 'http://10.0.1.13:3001', // Your local IP + dev server port
+    url: 'http://192.168.1.23:3000', // Your local IP + dev server port
     cleartext: true
   }
 };

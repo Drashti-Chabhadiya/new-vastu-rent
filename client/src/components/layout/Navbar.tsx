@@ -29,7 +29,6 @@ const navLinks = [
   { label: 'How it works', path: '/', hash: 'how-it-works' },
   { label: 'Journal', path: '/', hash: 'journal' },
   { label: 'Become a host', path: '/become-lister' },
-  { label: 'Download App', path: '/download' },
 ]
 
 export function Navbar() {

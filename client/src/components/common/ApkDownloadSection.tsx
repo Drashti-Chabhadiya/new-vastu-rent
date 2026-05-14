@@ -1,132 +1,243 @@
-import { ShieldCheck, Info, Smartphone, QrCode, CheckCircle2 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { APK_CONFIG, getApkDownloadUrl } from '#/lib/apk';
+import { ShieldCheck, Smartphone, CheckCircle2, Download, ExternalLink, RefreshCw, AlertTriangle, Settings2, Globe, Copy, Check } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect } from 'react';
 
 const ApkDownloadSection = () => {
+  const [downloadUrl, setDownloadUrl] = useState('');
+  const [qrLoaded, setQrLoaded] = useState(false);
+  const [isLocalhost, setIsLocalhost] = useState(false);
+  const [customIp, setCustomIp] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
+    const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
+    setIsLocalhost(isLocal);
+    
+    // Use the smart utility to get the URL
+    const url = getApkDownloadUrl(customIp);
+    setDownloadUrl(url);
+    setQrLoaded(false);
+  }, [customIp]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(downloadUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const installSteps = [
-    { title: 'Download APK', description: 'Click the button below to start the download.' },
-    { title: 'Allow Unknown Sources', description: 'Go to Settings > Security and enable "Install from Unknown Sources".' },
-    { title: 'Install & Open', description: 'Tap on the downloaded file and follow the prompts to install.' },
+    { 
+      title: 'Download APK', 
+      description: 'Scan the QR code or click the button to start downloading the file.',
+      icon: <Download className="w-5 h-5" />
+    },
+    { 
+      title: 'Allow Unknown Sources', 
+      description: 'Go to Settings > Security and enable "Install from Unknown Sources".',
+      icon: <ShieldCheck className="w-5 h-5" />
+    },
+    { 
+      title: 'Install & Launch', 
+      description: 'Open the file and follow prompts to start using Vastu Rent.',
+      icon: <CheckCircle2 className="w-5 h-5" />
+    },
   ];
 
-  return (
-    <section className="relative overflow-hidden bg-background py-24 px-6 bg-grain">
-      {/* Decorative Background Elements */}
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" />
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(downloadUrl)}&bgcolor=ffffff&color=000000&margin=10`;
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+  return (
+    <section className="relative overflow-hidden bg-background py-24 px-6 bg-grain min-h-[800px] flex items-center">
+      {/* Background Orbs */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] -z-10" />
+
+      <div className="max-w-7xl mx-auto relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
           
-          {/* Left Content: Info & Download */}
+          {/* LEFT: Content & Actions */}
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-7 space-y-10"
           >
-            <div>
-              <motion.span 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="inline-block px-4 py-1.5 mb-4 text-sm font-semibold tracking-wider text-primary uppercase bg-primary/10 rounded-full border border-primary/20 font-sans"
+            <div className="space-y-6">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full border border-primary/20 text-xs font-bold uppercase tracking-widest font-sans"
               >
-                Mobile Experience
-              </motion.span>
-              <h1 className="text-5xl lg:text-6xl font-display text-foreground leading-tight">
-                Get Our <span className="text-primary">Android App</span>
+                <Smartphone className="w-4 h-4" />
+                Now Available for Android
+              </motion.div>
+              <h1 className="text-5xl lg:text-7xl font-display text-foreground leading-[1.05] tracking-tight">
+                Download <span className="text-primary italic">Vastu Rent</span> Mobile App
               </h1>
-              <p className="mt-6 text-xl text-muted-foreground max-w-xl leading-relaxed font-sans">
-                Experience the best of Vastu Rent on your mobile device. List properties, search rentals, and manage bookings on the go with our fast and secure app.
+              <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed font-sans">
+                Get the full Vastu Rent experience on your Android device. Fast listings, real-time booking updates, and exclusive mobile features.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            {/* Main Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6">
               <motion.a
-                href="/app-release.apk"
-                download="VastuRent"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl font-bold text-lg shadow-xl shadow-primary/25 transition-all hover:shadow-primary/40 font-sans"
+                href={downloadUrl}
+                download={APK_CONFIG.FILENAME}
+                whileHover={{ scale: 1.02, y: -4 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 sm:flex-none group relative inline-flex items-center justify-center gap-4 px-10 py-6 bg-primary text-white rounded-[2rem] font-bold text-xl shadow-2xl shadow-primary/30 transition-all hover:shadow-primary/50 font-sans"
               >
-                <div className="p-2 bg-white/20 rounded-lg group-hover:rotate-12 transition-transform">
-                  <Smartphone className="w-6 h-6" />
+                <div className="p-2 bg-white/20 rounded-xl group-hover:rotate-12 transition-transform">
+                  <Download className="w-6 h-6" />
                 </div>
-                <div className="flex flex-col items-start leading-none">
-                  <span className="text-xs opacity-80 font-medium mb-1 uppercase tracking-tighter">Download for Android</span>
-                  <span className="text-xl">Download APK</span>
+                <div className="flex flex-col items-start leading-tight">
+                  <span className="text-[10px] opacity-70 font-bold uppercase tracking-[0.2em] mb-0.5">{APK_CONFIG.VERSION} Stable</span>
+                  <span>Download APK</span>
                 </div>
               </motion.a>
 
               <div className="flex flex-col gap-2 font-sans">
-                <div className="flex items-center gap-2 text-primary font-medium">
-                  <ShieldCheck className="w-5 h-5" />
-                  <span>Safe & Secure Download</span>
+                <div className="flex items-center gap-2 text-primary font-bold">
+                  <ShieldCheck className="w-5 h-5 text-green-500" />
+                  <span>100% Safe & Virus Free</span>
                 </div>
-                <div className="flex items-center gap-4 text-muted-foreground text-sm">
-                  <span>Version: <b className="text-foreground">v1.0.0</b></span>
+                <div className="text-muted-foreground text-sm flex items-center gap-3">
+                  <span className="font-medium text-foreground">{APK_CONFIG.SIZE}</span>
                   <span className="w-1 h-1 bg-border rounded-full" />
-                  <span>Size: <b className="text-foreground">18.5 MB</b></span>
+                  <span>Android {APK_CONFIG.MIN_ANDROID}</span>
                 </div>
               </div>
             </div>
 
             {/* Install Steps */}
-            <div className="pt-8 border-t border-border font-sans">
-              <h3 className="text-lg font-display text-foreground mb-6 flex items-center gap-2">
-                <Info className="w-5 h-5 text-primary" />
-                Installation Steps
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {installSteps.map((step, idx) => (
-                  <div key={idx} className="flex gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm border border-primary/20">
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="text-foreground font-medium mb-1">{step.title}</h4>
-                      <p className="text-muted-foreground text-xs leading-relaxed">{step.description}</p>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 border-t border-border/50">
+              {installSteps.map((step, i) => (
+                <div key={i} className="flex flex-col gap-4 p-4 rounded-3xl hover:bg-white/50 transition-colors">
+                  <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary border border-primary/10">
+                    {step.icon}
                   </div>
-                ))}
-              </div>
+                  <div>
+                    <h4 className="font-bold text-foreground mb-1 font-sans">{step.title}</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed font-sans">{step.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Right Content: QR & Phone Preview */}
+          {/* RIGHT: QR Code & Device Detection */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative lg:ml-auto"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-5 relative"
           >
-            {/* Glassmorphism Card */}
-            <div className="relative z-10 p-8 rounded-[2.5rem] bg-white backdrop-blur-xl border border-border shadow-soft">
-              <div className="flex flex-col items-center text-center">
-                <div className="mb-6 p-4 bg-white rounded-3xl shadow-inner relative overflow-hidden group border border-border">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <QrCode className="w-48 h-48 text-foreground" />
+            {/* The QR Card */}
+            <div className="relative z-10 bg-white border border-border p-10 rounded-[3.5rem] shadow-[0_40px_80px_-15px_rgba(0,0,0,0.12)]">
+              
+              {/* Dev/Localhost Warning */}
+              <AnimatePresence>
+                {isLocalhost && (
+                  <motion.div 
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="mb-8 p-5 bg-amber-50 border border-amber-200 rounded-3xl overflow-hidden"
+                  >
+                    <div className="flex gap-4">
+                      <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0" />
+                      <div className="space-y-3 w-full">
+                        <p className="text-xs font-bold text-amber-800 font-sans leading-relaxed">
+                          Localhost detected! To scan with your phone, enter your PC's local IP address below.
+                        </p>
+                        <div className="flex gap-2">
+                          <input 
+                            type="text" 
+                            placeholder="e.g. 192.168.1.23"
+                            value={customIp}
+                            onChange={(e) => setCustomIp(e.target.value)}
+                            className="flex-1 px-4 py-2 bg-white border border-amber-300 rounded-xl text-xs font-sans focus:outline-none focus:ring-2 focus:ring-amber-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* QR Code Container */}
+              <div className="text-center space-y-8">
+                <div className="relative w-full aspect-square max-w-[300px] mx-auto group">
+                  {/* Decorative Frame */}
+                  <div className="absolute inset-0 bg-primary/5 rounded-[3rem] rotate-3 transition-transform group-hover:rotate-0" />
+                  <div className="relative z-10 w-full h-full bg-white rounded-[3rem] p-8 shadow-soft border border-border/50 flex items-center justify-center overflow-hidden">
+                    {!qrLoaded && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white z-20">
+                        <RefreshCw className="w-10 h-10 text-primary animate-spin" />
+                        <span className="text-xs font-sans text-muted-foreground">Generating QR...</span>
+                      </div>
+                    )}
+                    <img 
+                      src={qrImageUrl} 
+                      alt="Scan to Download"
+                      className={`w-full h-full object-contain transition-opacity duration-500 ${qrLoaded ? 'opacity-100' : 'opacity-0'}`}
+                      onLoad={() => setQrLoaded(true)}
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-display text-foreground mb-2">Scan to Download</h3>
-                <p className="text-muted-foreground text-sm max-w-[200px] font-sans">
-                  Point your camera at the QR code to install directly on your phone.
-                </p>
-                
-                <div className="mt-8 flex flex-wrap justify-center gap-3 font-sans">
-                  <span className="px-4 py-2 bg-primary-soft/30 rounded-full text-xs text-primary font-medium border border-primary/10 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4" /> Verified by Google
-                  </span>
-                  <span className="px-4 py-2 bg-primary-soft/30 rounded-full text-xs text-primary font-medium border border-primary/10 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4" /> Virus Free
-                  </span>
+
+                <div className="space-y-3 px-4">
+                  <h3 className="text-2xl font-display text-foreground leading-tight">Scan to Install</h3>
+                  <p className="text-sm text-muted-foreground font-sans leading-relaxed">
+                    Point your camera at this code to download the APK directly to your phone.
+                  </p>
+                </div>
+
+                {/* Status Badges */}
+                <div className="flex flex-wrap justify-center gap-3 pt-4 border-t border-border/50">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 text-[10px] font-bold rounded-full border border-green-100 uppercase tracking-wider">
+                    <CheckCircle2 className="w-3 h-3" /> Secure Link
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full border border-blue-100 uppercase tracking-wider">
+                    <Globe className="w-3 h-3" /> Global Access
+                  </div>
+                </div>
+
+                {/* Smart Copy Component */}
+                <div className="pt-4 flex flex-col gap-3">
+                  <div className="relative group/copy">
+                    <div className="absolute inset-0 bg-primary/5 rounded-2xl blur-lg opacity-0 group-hover/copy:opacity-100 transition-opacity" />
+                    <button 
+                      onClick={handleCopy}
+                      className="relative w-full flex items-center justify-between gap-3 bg-surface border border-border p-3.5 rounded-2xl transition-all hover:border-primary/30 group"
+                    >
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                          <ExternalLink className="w-4 h-4" />
+                        </div>
+                        <span className="text-[11px] font-mono text-muted-foreground truncate max-w-[180px]">
+                          {downloadUrl}
+                        </span>
+                      </div>
+                      <div className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 bg-primary/5 text-primary rounded-xl text-[10px] font-bold uppercase transition-colors group-hover:bg-primary group-hover:text-white">
+                        {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        {copied ? 'Copied' : 'Copy'}
+                      </div>
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground font-sans text-center opacity-40">
+                    Share this link with your Android device
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Decorative Shadow */}
-            <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] -z-10 blur-xl" />
+            {/* Floating Decorations */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-[80px] -z-10" />
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-accent/10 rounded-full blur-[80px] -z-10" />
           </motion.div>
-
         </div>
       </div>
     </section>
