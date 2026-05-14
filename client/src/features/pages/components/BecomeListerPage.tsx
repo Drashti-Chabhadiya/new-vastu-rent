@@ -112,7 +112,7 @@ export function BecomeListerPage() {
                 "Listing my professional camera equipment on Vastu-Rent has been a game-changer. I've earned over ₹45,000 in just three months, and every renter has been respectful and professional."
               </h3>
               <div>
-                <p className="text-xl font-bold bg-primary">Rahul Sharma</p>
+                <p className="text-xl font-bold text-primary">Rahul Sharma</p>
                 <p className="text-gray-500">Professional Photographer, Ahmedabad</p>
               </div>
             </div>

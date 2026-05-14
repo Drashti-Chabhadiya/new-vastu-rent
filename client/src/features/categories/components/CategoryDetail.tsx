@@ -47,7 +47,7 @@ export function CategoryDetail() {
             
             <div className="flex items-center gap-4">
               <div className="text-center px-6 py-3 bg-primary/5 rounded-2xl border border-brand/10">
-                <p className="text-2xl font-bold bg-primary">{products?.length || 0}</p>
+                <p className="text-2xl font-bold text-primary">{products?.length || 0}</p>
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Items</p>
               </div>
             </div>

@@ -88,7 +88,7 @@ export function ProfileLayout({ children, activeTab }: ProfileLayoutProps) {
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon size={20} className={cn("transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:bg-primary")} />
+                        <Icon size={20} className={cn("transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:text-primary")} />
                         <span className="font-bold text-[13px]">{item.label}</span>
                       </div>
                       <ChevronRight size={16} className={cn("transition-all duration-300", isActive ? "text-white opacity-70 translate-x-1" : "text-gray-300 opacity-0 group-hover:opacity-100 group-hover:translate-x-1")} />
