@@ -22,7 +22,7 @@ import {
   navigationMenuTriggerStyle,
 } from "#/components/ui/navigation-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "#/components/ui/avatar"
-import { User, LogOut, LayoutDashboard, Settings, Heart, ArrowUpRight, Search } from "lucide-react"
+import { User, LogOut, LayoutDashboard, Settings, Heart, ArrowUpRight, Search, Smartphone } from "lucide-react"
 import { cn } from '#/lib/utils'
 const navLinks = [
   { label: 'Catalogue', path: '/', hash: 'categories' },
@@ -40,7 +40,7 @@ export function Navbar() {
   const { data: categories } = useCategories()
 
   useEffect(() => {
-    authClient.getSession().then((res) => {
+    authClient.getSession().then((res: any) => {
       setSession(res.data)
       setIsPending(false)
     })
@@ -123,6 +123,14 @@ export function Navbar() {
           >
             <Search className="h-4 w-4" />
           </button>
+          <Link to="/download">
+            <button
+              aria-label="Download App"
+              className="grid h-10 w-10 place-items-center rounded-full border border-border text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
+            >
+              <Smartphone className="h-4 w-4" />
+            </button>
+          </Link>
           <Link to="/wishlist">
             <button
               aria-label="Saved"

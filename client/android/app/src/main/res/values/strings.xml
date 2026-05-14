@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Vastu Rent</string>
+    <string name="title_activity_main">Vastu Rent</string>
+    <string name="package_name">com.vasturent.app</string>
+    <string name="custom_url_scheme">com.vasturent.app</string>
+</resources>
