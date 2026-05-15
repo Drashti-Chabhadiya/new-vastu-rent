@@ -61,3 +61,7 @@ app.register(reviewRoutes, { prefix: "/api/admin/reviews" });
 // Legacy redirects
 app.get("/api/my-rentals", async (req, reply) => reply.redirect("/api/rentals/my"));
 app.get("/api/my-listings", async (req, reply) => reply.redirect("/api/products/my-listings"));
+
+// Health check
+app.get("/api/health", async () => ({ status: "ok", timestamp: new Date().toISOString() }));
+app.get("/", async () => ({ message: "Vastu-Rent API is running" }));

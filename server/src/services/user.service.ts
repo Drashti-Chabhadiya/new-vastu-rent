@@ -100,8 +100,8 @@ export class UserService {
     // Calculate average rating across all products
     let totalRating = 0;
     let reviewCount = 0;
-    user.products.forEach(p => {
-      p.reviews.forEach(r => {
+    user.products.forEach((p: any) => {
+      p.reviews.forEach((r: any) => {
         totalRating += r.rating;
         reviewCount++;
       });

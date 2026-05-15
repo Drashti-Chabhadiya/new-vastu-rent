@@ -8,7 +8,7 @@ export class PaymentController {
     
     // Fetch rental details
     const rentals = await rentalService.getMyRentals((request as any).user.id);
-    const rental = rentals.find(r => r.id === rentalId);
+    const rental = rentals.find((r: any) => r.id === rentalId);
 
     if (!rental) {
       return reply.status(404).send({ message: "Rental not found" });

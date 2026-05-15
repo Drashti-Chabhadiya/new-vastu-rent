@@ -45,11 +45,11 @@ export class ProductService {
       },
     });
 
-    return products.map(p => ({
+    return products.map((p: any) => ({
       ...p,
       reviewsCount: p._count.reviews,
       rating: p.reviews.length > 0 
-        ? (p.reviews.reduce((acc, r) => acc + r.rating, 0) / p.reviews.length).toFixed(1)
+        ? (p.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / p.reviews.length).toFixed(1)
         : "5.0"
     }));
   }
@@ -99,8 +99,8 @@ export class ProductService {
     // Calculate owner's average rating
     let ownerTotalRating = 0;
     let ownerReviewCount = 0;
-    product.owner.products.forEach(p => {
-      p.reviews.forEach(r => {
+    product.owner.products.forEach((p: any) => {
+      p.reviews.forEach((r: any) => {
         ownerTotalRating += r.rating;
         ownerReviewCount++;
       });
@@ -111,7 +111,7 @@ export class ProductService {
       ...product,
       reviewsCount: product._count.reviews,
       rating: product.reviews.length > 0 
-        ? (product.reviews.reduce((acc, r) => acc + r.rating, 0) / product.reviews.length).toFixed(1)
+        ? (product.reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / product.reviews.length).toFixed(1)
         : "5.0",
       owner: {
         id: product.owner.id,

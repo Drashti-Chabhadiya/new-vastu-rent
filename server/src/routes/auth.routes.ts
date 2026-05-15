@@ -20,7 +20,7 @@ export async function authRoutes(app: FastifyInstance) {
     const response = await auth.handler(req);
     
     reply.status(response.status);
-    response.headers.forEach((value, key) => {
+    response.headers.forEach((value: any, key: any) => {
       reply.header(key, value);
     });
     

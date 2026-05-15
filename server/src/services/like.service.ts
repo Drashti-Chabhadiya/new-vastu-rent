@@ -35,7 +35,7 @@ export class LikeService {
       where: { userId },
       select: { productId: true },
     });
-    return likes.map((l) => l.productId);
+    return likes.map((l: any) => l.productId);
   }
 
   async getLikedProducts(userId: string) {
@@ -50,7 +50,7 @@ export class LikeService {
         },
       },
     });
-    return likes.map((l) => l.product);
+    return likes.map((l: any) => l.product);
   }
 }
 
