@@ -14,6 +14,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as JournalRouteImport } from './routes/journal'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as DownloadRouteImport } from './routes/download'
@@ -55,6 +56,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JournalRoute = JournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HowItWorksRoute = HowItWorksRouteImport.update({
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/download': typeof DownloadRoute
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRouteWithChildren
   '/profile': typeof ProfileRouteWithChildren
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/download': typeof DownloadRoute
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/wishlist': typeof WishlistRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/download': typeof DownloadRoute
   '/help': typeof HelpRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/journal': typeof JournalRoute
   '/login': typeof LoginRoute
   '/products': typeof ProductsRouteWithChildren
   '/profile': typeof ProfileRouteWithChildren
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/download'
     | '/help'
     | '/how-it-works'
+    | '/journal'
     | '/login'
     | '/products'
     | '/profile'
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/download'
     | '/help'
     | '/how-it-works'
+    | '/journal'
     | '/login'
     | '/signup'
     | '/wishlist'
@@ -268,6 +279,7 @@ export interface FileRouteTypes {
     | '/download'
     | '/help'
     | '/how-it-works'
+    | '/journal'
     | '/login'
     | '/products'
     | '/profile'
@@ -293,6 +305,7 @@ export interface RootRouteChildren {
   DownloadRoute: typeof DownloadRoute
   HelpRoute: typeof HelpRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  JournalRoute: typeof JournalRoute
   LoginRoute: typeof LoginRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   ProfileRoute: typeof ProfileRouteWithChildren
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journal': {
+      id: '/journal'
+      path: '/journal'
+      fullPath: '/journal'
+      preLoaderRoute: typeof JournalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/how-it-works': {
@@ -514,6 +534,7 @@ const rootRouteChildren: RootRouteChildren = {
   DownloadRoute: DownloadRoute,
   HelpRoute: HelpRoute,
   HowItWorksRoute: HowItWorksRoute,
+  JournalRoute: JournalRoute,
   LoginRoute: LoginRoute,
   ProductsRoute: ProductsRouteWithChildren,
   ProfileRoute: ProfileRouteWithChildren,

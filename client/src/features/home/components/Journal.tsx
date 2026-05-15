@@ -55,7 +55,7 @@ export function Journal() {
               Stories from the catalogue.
             </h2>
           </div>
-          <Link to="/about" className="hidden items-center gap-2 text-[13px] font-medium text-foreground/80 underline decoration-border decoration-2 underline-offset-[8px] transition-all hover:text-primary hover:decoration-primary md:inline-flex">
+          <Link to="/journal" className="hidden items-center gap-2 text-[13px] font-medium text-foreground/80 underline decoration-border decoration-2 underline-offset-[8px] transition-all hover:text-primary hover:decoration-primary md:inline-flex">
             Read the journal <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
@@ -69,7 +69,7 @@ export function Journal() {
         >
           {posts.map((p) => (
             <motion.div variants={fadeUp} key={p.title}>
-              <Link to="/about" className="group block">
+              <Link to="/journal" className="group block">
                 <div className="relative overflow-hidden rounded-[2rem] bg-background">
                   <img
                     src={p.img}

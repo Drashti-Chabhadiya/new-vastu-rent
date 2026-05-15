@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { authClient } from '#/lib/auth/auth-client'
-import { Logo } from './Logo'
+import { Logo } from "#/components/layout";
 import { useCategories, useWishlist } from '#/hook'
 import { Link, useNavigate } from '@tanstack/react-router'
 import {

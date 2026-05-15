@@ -1,4 +1,4 @@
-import { Logo } from "#/components/layout/Logo";
+import { Logo } from "#/components/layout";
 import { ShieldCheck, CreditCard, Headphones, Home, Car, Percent } from "lucide-react";
 
 const floatingItems = [
