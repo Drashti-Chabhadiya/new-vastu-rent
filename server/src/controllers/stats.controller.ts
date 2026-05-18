@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { userService } from "../services/user.service";
-import { productService } from "../services/product.service";
-import { rentalService } from "../services/rental.service";
+import { userService } from "../services/user.service.js";
+import { productService } from "../services/product.service.js";
+import { rentalService } from "../services/rental.service.js";
 
 export class StatsController {
   async getDashboardStats(request: FastifyRequest, reply: FastifyReply) {

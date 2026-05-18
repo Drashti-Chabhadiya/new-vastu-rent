@@ -1,4 +1,4 @@
-import { auth } from "@/config/auth";
+import { auth } from "../config/auth.js";
 import { FastifyInstance } from "fastify";
 
 export async function authRoutes(app: FastifyInstance) {

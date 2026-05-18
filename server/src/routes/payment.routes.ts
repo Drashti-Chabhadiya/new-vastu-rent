@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { paymentController } from "../controllers/payment.controller";
-import { auth } from "../config/auth";
+import { paymentController } from "../controllers/payment.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function paymentRoutes(fastify: FastifyInstance) {
   const authHandler = async (request: any, reply: any) => {

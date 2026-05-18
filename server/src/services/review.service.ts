@@ -1,4 +1,4 @@
-import { prisma } from "../config/prisma";
+import { prisma } from "../config/prisma.js";
 
 export class ReviewService {
   async getAllReviews(search?: string, productId?: string) {

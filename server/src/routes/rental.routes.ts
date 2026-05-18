@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { rentalController } from "../controllers/rental.controller";
-import { auth } from "../config/auth";
+import { rentalController } from "../controllers/rental.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function rentalRoutes(fastify: FastifyInstance) {
   // Public Routes

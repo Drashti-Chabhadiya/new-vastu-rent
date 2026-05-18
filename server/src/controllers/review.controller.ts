@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { reviewService } from "../services/review.service";
+import { reviewService } from "../services/review.service.js";
 
 export class ReviewController {
   async getAllReviews(request: FastifyRequest, reply: FastifyReply) {

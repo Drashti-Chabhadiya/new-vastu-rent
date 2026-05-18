@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { statsController } from "../controllers/stats.controller";
-import { auth } from "../config/auth";
+import { statsController } from "../controllers/stats.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function statsRoutes(fastify: FastifyInstance) {
   fastify.addHook("preHandler", async (request, reply) => {

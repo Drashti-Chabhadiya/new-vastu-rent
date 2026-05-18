@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { categoryService } from "../services/category.service";
+import { categoryService } from "../services/category.service.js";
 
 export class CategoryController {
   async getAllCategories(request: FastifyRequest, reply: FastifyReply) {

@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { paymentService } from "../services/payment.service";
-import { rentalService } from "../services/rental.service";
+import { paymentService } from "../services/payment.service.js";
+import { rentalService } from "../services/rental.service.js";
 
 export class PaymentController {
   async createOrder(request: FastifyRequest, reply: FastifyReply) {

@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { productController } from "../controllers/product.controller";
-import { auth } from "../config/auth";
+import { productController } from "../controllers/product.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function productRoutes(fastify: FastifyInstance) {
   // ─── Public Routes ──────────────────────────────────────────────────────────

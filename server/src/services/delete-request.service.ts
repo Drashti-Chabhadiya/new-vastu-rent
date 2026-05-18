@@ -1,5 +1,5 @@
-import { prisma } from "../config/prisma";
-import { productService } from "./product.service";
+import { prisma } from "../config/prisma.js";
+import { productService } from "./product.service.js";
 
 export class DeleteRequestService {
   async createRequest(productId: string, adminId: string, reason?: string) {

@@ -1,4 +1,4 @@
-import { prisma } from "../config/prisma";
+import { prisma } from "../config/prisma.js";
 
 export class UserService {
   async getRecentUsers() {
@@ -65,7 +65,7 @@ export class UserService {
   async deleteUser(id: string) {
     const user = await prisma.user.findUnique({ where: { id } });
     if (user?.image) {
-      const { cloudinaryService } = await import("./cloudinary.service");
+      const { cloudinaryService } = await import("./cloudinary.service.js");
       const publicId = cloudinaryService.extractPublicId(user.image);
       if (publicId) {
         await cloudinaryService.deleteImage(publicId);

@@ -1,4 +1,4 @@
-import { prisma } from "../config/prisma";
+import { prisma } from "../config/prisma.js";
 
 export class CategoryService {
   async getAllCategories() {
@@ -28,7 +28,7 @@ export class CategoryService {
   async deleteCategory(id: string) {
     const category = await prisma.category.findUnique({ where: { id } });
     if (category?.image) {
-      const { cloudinaryService } = await import("./cloudinary.service");
+      const { cloudinaryService } = await import("./cloudinary.service.js");
       const publicId = cloudinaryService.extractPublicId(category.image);
       if (publicId) {
         await cloudinaryService.deleteImage(publicId);

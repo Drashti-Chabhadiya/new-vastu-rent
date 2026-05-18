@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { userController } from "../controllers/user.controller";
-import { auth } from "../config/auth";
+import { userController } from "../controllers/user.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function userRoutes(fastify: FastifyInstance) {
   // Public Profile Route

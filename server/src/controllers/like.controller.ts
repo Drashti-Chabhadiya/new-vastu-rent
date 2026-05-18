@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { likeService } from "../services/like.service";
+import { likeService } from "../services/like.service.js";
 
 export class LikeController {
   async toggleLike(request: FastifyRequest, reply: FastifyReply) {

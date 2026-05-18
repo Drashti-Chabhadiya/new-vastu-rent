@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { reviewController } from "../controllers/review.controller";
-import { auth } from "../config/auth";
+import { reviewController } from "../controllers/review.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function reviewRoutes(fastify: FastifyInstance) {
   // Public Routes

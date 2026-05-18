@@ -1,4 +1,4 @@
-import { prisma } from "../config/prisma";
+import { prisma } from "../config/prisma.js";
 
 export class ProductService {
   async getAllProducts(filters: { search?: string; categoryId?: string; status?: string; minPrice?: string; maxPrice?: string; isAvailable?: boolean; ids?: string | string[] }) {
@@ -170,7 +170,7 @@ export class ProductService {
 
     // Delete images from Cloudinary
     if (product.images && product.images.length > 0) {
-      const { cloudinaryService } = await import("./cloudinary.service");
+      const { cloudinaryService } = await import("./cloudinary.service.js");
       for (const imageUrl of product.images) {
         const publicId = cloudinaryService.extractPublicId(imageUrl);
         if (publicId) {

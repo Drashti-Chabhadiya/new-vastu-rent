@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { uploadController } from "../controllers/upload.controller";
+import { uploadController } from "../controllers/upload.controller.js";
 
 export async function uploadRoutes(app: FastifyInstance) {
   // We'll need a middleware to check authentication for profile uploads

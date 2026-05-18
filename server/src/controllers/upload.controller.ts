@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { cloudinaryService } from "../services/cloudinary.service";
-import { prisma } from "../config/prisma";
+import { cloudinaryService } from "../services/cloudinary.service.js";
+import { prisma } from "../config/prisma.js";
 
 export class UploadController {
   async uploadProfileImage(request: FastifyRequest, reply: FastifyReply) {

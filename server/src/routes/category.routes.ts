@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { categoryController } from "../controllers/category.controller";
-import { auth } from "../config/auth";
+import { categoryController } from "../controllers/category.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function categoryRoutes(fastify: FastifyInstance) {
   // Public Routes

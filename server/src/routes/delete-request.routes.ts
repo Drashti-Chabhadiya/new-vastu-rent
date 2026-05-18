@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { deleteRequestController } from "../controllers/delete-request.controller";
-import { auth } from "../config/auth";
+import { deleteRequestController } from "../controllers/delete-request.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function deleteRequestRoutes(fastify: FastifyInstance) {
   const authHandler = async (request: any, reply: any) => {

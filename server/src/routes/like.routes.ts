@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { likeController } from "../controllers/like.controller";
-import { auth } from "../config/auth";
+import { likeController } from "../controllers/like.controller.js";
+import { auth } from "../config/auth.js";
 
 export async function likeRoutes(fastify: FastifyInstance) {
   const authHandler = async (request: any, reply: any) => {

@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { rentalService } from "../services/rental.service";
+import { rentalService } from "../services/rental.service.js";
 
 export class RentalController {
   async createRental(request: FastifyRequest, reply: FastifyReply) {

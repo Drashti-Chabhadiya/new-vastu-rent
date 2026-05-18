@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { userService } from "../services/user.service";
-import { auth } from "../config/auth";
+import { userService } from "../services/user.service.js";
+import { auth } from "../config/auth.js";
 
 export class UserController {
   async getRecentUsers(request: FastifyRequest, reply: FastifyReply) {

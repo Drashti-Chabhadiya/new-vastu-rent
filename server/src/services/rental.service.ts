@@ -1,4 +1,4 @@
-import { prisma } from "../config/prisma";
+import { prisma } from "../config/prisma.js";
 
 export class RentalService {
   async createRental(data: { productId: string; renterId: string; startDate: string; endDate: string; totalPrice: number; rentalFee: number; depositAmount: number; paymentMethod?: string }) {
