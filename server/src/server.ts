@@ -1,19 +1,32 @@
 import { app } from "./app";
 import { connectPrisma } from "./config/prisma";
 
-const start = async () => {
-  try {
-    await connectPrisma();
-    await app.listen({ port: 4000, host: "0.0.0.0" });
-    console.log("🚀 Server running on http://localhost:4000");
-    console.log("🔐 Auth endpoints: http://localhost:4000/api/auth/**");
-  } catch (err) {
-    app.log.error(err);
-    process.exit(1);
-  }
+// Prisma કનેક્શન ઇનિશિયલાઈઝ કરો
+await connectPrisma();
+
+// Vercel માટે handler ફંક્શન
+export default async (req: any, res: any) => {
+  await app.ready();
+  app.server.emit('request', req, res);
 };
 
-start();
+
+// import { app } from "./app";
+// import { connectPrisma } from "./config/prisma";
+
+// const start = async () => {
+//   try {
+//     await connectPrisma();
+//     await app.listen({ port: 4000, host: "0.0.0.0" });
+//     console.log("🚀 Server running on http://localhost:4000");
+//     console.log("🔐 Auth endpoints: http://localhost:4000/api/auth/**");
+//   } catch (err) {
+//     app.log.error(err);
+//     process.exit(1);
+//   }
+// };
+
+// start();
 
 // import { app } from "./app";
 // import { connectPrisma } from "./config/prisma";
