@@ -34,7 +34,12 @@ export const auth = betterAuth({
    * Allow cross-origin requests from the client dev server.
    * Better Auth will set the correct CORS headers automatically.
    */
-  trustedOrigins: ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173"],
+  trustedOrigins: [
+    process.env.CLIENT_URL,
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+  ].filter(Boolean) as string[],
 
   /**
    * Enable the admin plugin for role management.
