@@ -2,19 +2,19 @@ import "dotenv/config";
 import Fastify from "fastify";
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
-import { authRoutes } from "./routes/auth.routes";
-import { userRoutes } from "./routes/user.routes";
-import { productRoutes } from "./routes/product.routes";
-import { categoryRoutes } from "./routes/category.routes";
-import { reviewRoutes } from "./routes/review.routes";
-import { rentalRoutes } from "./routes/rental.routes";
-import { statsRoutes } from "./routes/stats.routes";
+import { authRoutes } from "./routes/auth.routes.js";
+import { userRoutes } from "./routes/user.routes.js";
+import { productRoutes } from "./routes/product.routes.js";
+import { categoryRoutes } from "./routes/category.routes.js";
+import { reviewRoutes } from "./routes/review.routes.js";
+import { rentalRoutes } from "./routes/rental.routes.js";
+import { statsRoutes } from "./routes/stats.routes.js";
 
 import multipart from "@fastify/multipart";
-import { uploadRoutes } from "./routes/upload.routes";
-import { likeRoutes } from "./routes/like.routes";
-import { deleteRequestRoutes } from "./routes/delete-request.routes";
-import { paymentRoutes } from "./routes/payment.routes";
+import { uploadRoutes } from "./routes/upload.routes.js";
+import { likeRoutes } from "./routes/like.routes.js";
+import { deleteRequestRoutes } from "./routes/delete-request.routes.js";
+import { paymentRoutes } from "./routes/payment.routes.js";
 
 export const app = Fastify({ logger: true });
 
