@@ -9,7 +9,7 @@ import { adminClient } from "better-auth/client/plugins";
  * Cookies are sent automatically because we use `credentials: "include"`.
  */
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:4000/api/auth",
+  baseURL: import.meta.env.VITE_AUTH_URL || "http://localhost:4000/api/auth",
   plugins: [
     adminClient(),
   ],

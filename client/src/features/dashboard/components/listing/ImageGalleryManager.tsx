@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { 
   Plus, 
   Trash2, 
@@ -7,6 +7,7 @@ import {
   Star 
 } from 'lucide-react';
 import { Badge } from '#/components/ui/badge';
+import { useUploadProductImages } from '#/hook';
 
 interface ImageGalleryManagerProps {
   images: string[];
@@ -14,39 +15,17 @@ interface ImageGalleryManagerProps {
 }
 
 export const ImageGalleryManager = ({ images, onChange }: ImageGalleryManagerProps) => {
-  const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { mutateAsync: uploadImages, isPending: uploading } = useUploadProductImages()
 
   const handleUpload = async (files: FileList | null) => {
     if (!files) return;
-    setUploading(true);
-    
     try {
-      const newUrls: string[] = [];
-      
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const formData = new FormData()
-        formData.append('file', file)
-        
-        const response = await fetch('http://localhost:4000/api/upload/product', {
-          method: 'POST',
-          body: formData,
-        })
-        
-        if (!response.ok) throw new Error('Upload failed')
-        
-        const data = await response.json()
-        newUrls.push(data.url)
-      }
-      
+      const newUrls = await uploadImages(files)
       onChange([...images, ...newUrls]);
     } catch (error) {
       console.error('Upload Error:', error)
       alert('Failed to upload one or more images. Please try again.')
-    } finally {
-      setUploading(true); // Wait, this should be false, fixing below
-      setUploading(false);
     }
   };
 

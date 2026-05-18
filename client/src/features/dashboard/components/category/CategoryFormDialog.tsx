@@ -22,6 +22,7 @@ import {
 } from '#/components/ui/dialog'
 import { IconSelector } from './IconSelector'
 import { cn } from '#/lib/utils'
+import { useUploadProductImage } from '#/hook'
 
 interface CategoryFormDialogProps {
   isOpen: boolean
@@ -70,30 +71,17 @@ export const CategoryFormDialog = ({
     }
   }, [isOpen, editingCategory])
 
-  const [isUploading, setIsUploading] = useState(false)
+  const { mutateAsync: uploadImage, isPending: isUploading } = useUploadProductImage()
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setIsUploading(true)
       try {
-        const formData = new FormData()
-        formData.append('file', file)
-        
-        const response = await fetch('http://localhost:4000/api/upload/product', {
-          method: 'POST',
-          body: formData,
-        })
-        
-        if (!response.ok) throw new Error('Upload failed')
-        
-        const data = await response.json()
-        setCategoryImage(data.url)
+        const url = await uploadImage(file)
+        setCategoryImage(url)
       } catch (error) {
         console.error('Upload Error:', error)
         alert('Failed to upload image. Please try again.')
-      } finally {
-        setIsUploading(false)
       }
     }
   }

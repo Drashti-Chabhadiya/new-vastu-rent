@@ -1,25 +1,31 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { authClient } from "#/lib/auth/auth-client"
 import { Button } from "#/components/ui/button"
 import { cn } from "#/lib/utils"
 import { Input } from "#/components/ui/input"
 import { Label } from "#/components/ui/label"
 import { Mail, User as UserIcon, Calendar, Camera, Loader2 } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { useUploadProfileImage } from "#/hook"
 
 export function PersonalInfo() {
-  const [session, setSession] = useState<any>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    authClient.getSession().then((res) => setSession(res.data))
-  }, [])
+  const { mutateAsync: uploadImage, isPending: isSaving } = useUploadProfileImage()
+
+  // Fetch session via React Query for consistency
+  const { data: session, refetch } = useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const res = await authClient.getSession()
+      return res.data
+    },
+  })
 
   const handleEditClick = () => {
     if (isEditing) {
-      // Cancel edit
       setImagePreview(null)
       setIsEditing(false)
     } else {
@@ -45,35 +51,16 @@ export function PersonalInfo() {
   }
 
   const handleSaveChanges = async () => {
-    setIsSaving(true)
     try {
-      // 1. If there's a new image, upload it first
       if (fileInputRef.current?.files?.[0]) {
-        const formData = new FormData()
-        formData.append('file', fileInputRef.current.files[0])
-        
-        const response = await fetch('http://localhost:4000/api/upload/profile', {
-          method: 'POST',
-          body: formData,
-          // Cookies are automatically sent for session auth
-        })
-        
-        if (!response.ok) throw new Error('Upload failed')
-        
-        const data = await response.json()
-        setSession({ ...session, user: data.user })
+        await uploadImage(fileInputRef.current.files[0])
+        await refetch()
       }
-      
-      // 2. Here you would also update the name if it changed
-      // authClient.user.update({ name: newName })
-      
       setIsEditing(false)
       setImagePreview(null)
     } catch (error) {
       console.error('Save failed:', error)
       alert('Failed to save changes. Please try again.')
-    } finally {
-      setIsSaving(false)
     }
   }
 
